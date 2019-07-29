@@ -1,47 +1,47 @@
 {
-    "name": "@femessage/el-form-renderer",
+    "name": "ease-form",
     "version": "1.10.2",
     "description": "render form-item easily",
     "author": "leezng <leezng@outlook.com>",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/FEMessage/el-form-renderer.git"
+        "url": "https://github.com/overarchingSky/ease-form.git"
     },
-    "contributors": [
-        "https://github.com/FEMessage"
-    ],
     "keywords": [
         "vue",
-        "element",
-        "render",
+        "config",
+        "dynamic",
         "form",
-        "component"
+        "mobile",
+        "pc",
+        "phone",
+        "drag"
     ],
     "files": [
         "src",
         "dist",
         "yarn.lock"
     ],
-    "main": "dist/el-form-renderer.umd.js",
-    "module": "dist/el-form-renderer.esm.js",
-    "unpkg": "dist/el-form-renderer.min.js",
+    "main": "dist/ease-form.umd.js",
+    "module": "dist/ease-form.esm.js",
+    "unpkg": "dist/ease-form.min.js",
     "browser": {
-        "./sfc": "src/el-form-renderer.vue"
+        "./sfc": "src/ease-form.vue"
     },
     "scripts": {
         "rel": "standard-version",
         "dev": "vue-styleguidist server",
         "doc": "vue-styleguidist build",
         "build": "npm run build:unpkg & npm run build:es & npm run build:umd & npm run doc",
-        "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/el-form-renderer.umd.js",
-        "build:es": "rollup --config build/rollup.config.js --format es --file dist/el-form-renderer.esm.js",
-        "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/el-form-renderer.min.js",
+        "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/ease-form.umd.js",
+        "build:es": "rollup --config build/rollup.config.js --format es --file dist/ease-form.esm.js",
+        "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/ease-formr.min.js",
         "stdver": "standard-version -m '[skip ci] chore(release): v%s'",
         "release": "gren release --override",
         "test": "jest"
     },
-    "homepage": "https://github.com/FEMessage/el-form-renderer",
+    "homepage": "https://github.com/overarchingSky/ease-form",
     "dependencies": {
         "lodash.get": "^4.4.2",
         "lodash.set": "^4.3.2"
@@ -53,7 +53,6 @@
         "@femessage/upload-to-ali": "^1.8.0",
         "@vue/test-utils": "^1.0.0-beta.29",
         "babel-loader": "^8.0.5",
-        "element-ui": "^2.7.2",
         "file-loader": "^3.0.1",
         "github-release-notes": "^0.17.0",
         "glob": "^7.1.3",
