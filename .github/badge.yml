@@ -1,0 +1,13 @@
+types:
+  feat: 'enhancement'
+  fix: 
+    hack: 'hack'
+    default: 'bug'
+  hack: 'hack'
+  docs: 'documentation'
+  refactor: 'refactor'
+  test: 'test'
+  perf: 'performance'
+  chore:
+    deps: 'dependencies'
+    default: 'chore'
