@@ -47,13 +47,22 @@ el-data-table、el-data-tree 等组件内部集成该组件，用于更加灵活
 
 ## Feature
 
-- 只需进行简单的配置，即可实现常用表单功能
-- 支持 setOptions 方法，动态改变 select 的 options
-- content 支持 `inputFormat`、`outputFormat`、`trim`，对组件输入输出值处理
-- 支持 `on` 进行事件监听，处理表单数据联动
-- 支持 `hidden` 进行表单项动态显示与隐藏
-- 支持渲染自定义组件
-- 支持自定义组件设置校验规则
+- 跨平台（pc/mobile）
+- 脱离表现层（轻松结合其他 ui 框架）
+- 灵活的布局
+- 灵活的表单类型拓展
+- 灵活的错误消息提示
+- 支持灵活的字段注解
+- 集成 vee-validate 表单验证
+- 自定义表单验证触发时机
+- 数据联动
+- 自动计算
+- 动态显示
+- 远程选项（如 select，radio，checkbox 等）
+- 表单值回填（编辑）
+- 集成设计器
+- 轻量化
+- 插拔化
 
 **[⬆ Back to Top](#table-of-contents)**
 

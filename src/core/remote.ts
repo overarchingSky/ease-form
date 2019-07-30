@@ -1,0 +1,1 @@
+// Manager remote task, such as remote options so on.

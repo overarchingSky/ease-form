@@ -22,7 +22,7 @@ const sections = (() => {
   return [
     {
       name: 'Components',
-      components: 'src/el-form-renderer.js',
+      components: 'src/index.ts',
       usageMode: 'expand'
     },
     {
@@ -44,6 +44,9 @@ module.exports = {
   sections,
   require: ['./styleguide'],
   webpackConfig: {
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
     module: {
       rules: [
         {
@@ -54,6 +57,11 @@ module.exports = {
           test: /\.js?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
+        },
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          loader: 'ts-loader'
         },
         {
           test: /\.css$/,

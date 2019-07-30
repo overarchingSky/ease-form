@@ -4,17 +4,20 @@ import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import {terser} from 'rollup-plugin-terser'
 import minimist from 'minimist'
+import typescript from 'rollup-plugin-typescript2'
+//import resolve from 'rollup-plugin-node-resolve'
 
 const argv = minimist(process.argv.slice(2))
 
 const config = {
   input: 'src/index.js',
   output: {
-    name: 'ElFormRenderer',
+    name: 'easeForm',
     exports: 'named'
   },
   plugins: [
-    commonjs(),
+    typescript({module: 'CommonJS'}),
+    commonjs({extensions: ['.js', '.ts']}),
     vue({
       css: true,
       compileTemplate: true
