@@ -39,7 +39,7 @@ module.exports = {
   styleguideDir: 'docs',
   pagePerSection: true,
   ribbon: {
-    url: 'https://github.com/FEMessage/el-form-renderer'
+    url: 'https://github.com/overarchingSky/ease-form'
   },
   sections,
   require: ['./styleguide'],

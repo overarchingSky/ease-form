@@ -5,7 +5,7 @@ then
   exit 1
 fi
 
-url=https://api.github.com/repos/FEMessage/el-form-renderer/releases/latest
+url=https://api.github.com/repos/overarchingSky/ease-form/releases/latest
 resp_tmp_file=resp.tmp
 
 curl -H "Authorization: token $GITHUB_TOKEN" $url > $resp_tmp_file
