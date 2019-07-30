@@ -11,15 +11,16 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Introduction](#introduction)
-  - [内部集成](#内部集成)
-  - [外部扩展](#外部扩展)
-- [Feature](#feature)
-- [Links](#links)
-- [Quick Start](#quick-start)
-- [Inspiration](#inspiration)
-- [License](#license)
-- [Contributors](#contributors)
+- [el-form-renderer](#el-form-renderer)
+  - [Introduction](#Introduction)
+    - [内部集成](#%E5%86%85%E9%83%A8%E9%9B%86%E6%88%90)
+    - [外部扩展](#%E5%A4%96%E9%83%A8%E6%89%A9%E5%B1%95)
+  - [Feature](#Feature)
+  - [Links](#Links)
+  - [Quick Start](#Quick-Start)
+  - [Inspiration](#Inspiration)
+  - [License](#License)
+  - [Contributors](#Contributors)
 
 ## Introduction
 
@@ -46,6 +47,8 @@ el-data-table、el-data-tree 等组件内部集成该组件，用于更加灵活
 ![example.png](https://cdn.nlark.com/yuque/0/2019/png/160590/1562641394165-dc22af20-2863-443f-8f1a-17cd12b1f359.png#align=left&display=inline&height=1488&name=example.png&originHeight=1488&originWidth=2646&size=145427&status=done&width=2646)
 
 ## Feature
+
+module -> Widget 插拔模式
 
 - 跨平台（pc/mobile）
 - 脱离表现层（轻松结合其他 ui 框架）

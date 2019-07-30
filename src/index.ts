@@ -1,2 +1,3 @@
 import trigger from './enum/trigger'
-console.log('trigger',trigger.change)
+import { easeForm } from '../types/ease-form';
+console.log('trigger',trigger.blur)
