@@ -1,6 +1,6 @@
 import { CompOptions } from './../../types/comp-options.d';
 import Vue from 'vue'
-import { VNodeData } from 'vue/types/vnode';
+import { VNodeData, VNode } from 'vue/types/vnode';
 import { scheduler } from './../core/scheduler';
 import { CreateElement } from "vue";
 import { Field } from '../../types/field';
@@ -23,11 +23,15 @@ export default{
     data(){
         _config:null
     },
-    render(h:CreateElement){
-        this._config = initConifg(this.config)
+    render(h:CreateElement) : VNode{
+        const slots = this.initConifg(this.config)
         return h('form',{
             class:'ease-form'
-        },[])
+        },slots.map((slot:VNodeData) => {
+            return h('ease-form-item',{
+                ...slot
+            })
+        }))
     },
     methods:{
         /**
@@ -43,6 +47,7 @@ export default{
                 const scopedSlots:obj = fieldConfig._slots
                 let transmit:VNodeData = fieldConfig._transmit || {}
                 fieldConfig._formItem = formItem.component
+                Vue.component('ease-form-item',fieldConfig._formItem)
                 scopedSlots && slots.forEach((slotName:string) => {
                     const name:string = fieldConfig.slots[slotName]
                     const component:CompOptions = scheduler.getSlot(fieldConfig.type,fieldConfig.slots[slotName])

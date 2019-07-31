@@ -1,4 +1,4 @@
-import itemDefault from './item-default.vue'
+import annotationDefault from './annotation-default.vue'
 export default [
-    itemDefault
+    annotationDefault
 ]
