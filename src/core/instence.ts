@@ -1,6 +1,7 @@
+import { scheduler } from './scheduler';
 import { easeForm } from "../../types/ease-form";
-
 // Instance function, property
-class Form implements easeForm {
-    
+export class Form implements easeForm {
+    addFormItem = scheduler.addFormItem
+    addSlot = scheduler.addSlot
 }

@@ -1,3 +1,8 @@
+import { VNodeData } from 'vue/types/vnode';
+import { scheduler } from './core/scheduler';
+import { Field } from "../types/field";
+import { schedulerFormItem } from "../types/scheduler";
+
 /**
  * 转换为大小驼峰命名
  * abc-efg => abcEfg
@@ -13,19 +18,4 @@ export const toCamelCase = str => {
  */
 export const toUpperCaseFirst = str => {
     return str[0].toUpperCase() + str.substr(1)
-}
-
-/**
- * 是否对象
- */
-export const isObject = obj => {
-    return Object.prototype.toString.call(obj) === '[object Object]'
-}
-
-/**
- * 
- * @param {*} obj 
- */
-export const getDefaultWidget = obj => {
-    return Object.prototype.toString.call(obj) === '[object Object]'
 }
