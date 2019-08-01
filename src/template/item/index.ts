@@ -1,4 +1,4 @@
-import itemDefault from './item-default.vue'
+import Default from './default.vue'
 export default [
-    itemDefault
+    Default
 ]

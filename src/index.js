@@ -1,5 +1,5 @@
 // Import vue component
-import Form from './template/form'
+import Form from './template/ease-form'
 //import { Vue } from 'vue/types/vue'
 // install function executed by Vue.use()
 

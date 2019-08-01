@@ -1,6 +1,6 @@
 <template>
   <div>
-    annotation
+    content
     <slot name="label" />
     <slot />
     <slot name="error" />
@@ -8,10 +8,10 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+export default {
+  name: 'ease-form-default-content',
   props: {},
   components: {}
-})
+}
 </script>
 <style lang="less"></style>

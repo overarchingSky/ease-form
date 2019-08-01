@@ -1,9 +1,9 @@
 <template>
-  <label for="for">{{ label }}</label>
+  <label for="for">label</label>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+export default {
+  name: 'ease-form-default-label',
   props: {
     label: {
       type: String
@@ -12,6 +12,6 @@ export default Vue.extend({
       type: String
     }
   }
-})
+}
 </script>
 <style lang="less"></style>

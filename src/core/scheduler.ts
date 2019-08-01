@@ -5,34 +5,50 @@ import DefaultLabels from '../template/label'
 import DefaultContents from '../template/content'
 import DefaultErrors from '../template/error'
 import { schedulerFormItem, schedulerSlots } from '../../types/scheduler';
+import { signAsInternalComp } from '../utils';
 
 class Scheduler {
-    formItems: schedulerFormItem[]
+    formItems: schedulerFormItem[] = []
     slot:{
-        formAnnotation:CompOptions[]
-        formLabels:CompOptions[]
-        formContnets:CompOptions[]
-        formErrors:CompOptions[]
+        annotation:CompOptions[]
+        label:CompOptions[]
+        contnet:CompOptions[]
+        error:CompOptions[]
         [key:string]:CompOptions[]
+    } = {
+        annotation:[],
+        label:[],
+        contnet:[],
+        error:[]
     }
     constructor(){
         let slot = this.slot
+        DefaultItems.forEach((item:CompOptions) => {
+            item.internal = true
+        })
+        signAsInternalComp(DefaultItems)
+        signAsInternalComp(DefaultAnnotation)
+        signAsInternalComp(DefaultLabels)
+        signAsInternalComp(DefaultContents)
+        signAsInternalComp(DefaultErrors)
         this.addFormItem(DefaultItems)
-        slot.formAnnotation = DefaultAnnotation
-        slot.formLabels = DefaultLabels
-        slot.formContnets = DefaultContents
-        slot.formErrors = DefaultErrors
+        slot.annotation = DefaultAnnotation
+        slot.label = DefaultLabels
+        slot.contnet = DefaultContents
+        slot.error = DefaultErrors
     }
     addFormItem ( arg: (schedulerFormItem|CompOptions)[] ) : void {
         this.formItems = this.formItems || []
         arg.forEach(item => {
-            if(item.slots){
+            if(item.slots && (item as schedulerFormItem).component){
+                this.formItems.push((item as schedulerFormItem))
+            }else if(item.slots){
                 this.formItems.push({
                     slots: (item as CompOptions).slots,
                     component:<CompOptions>item
                 })
             }else{
-                this.formItems.push((item as schedulerFormItem))
+                throw(Error('form-item模板必须携带slots参数'))
             }
         })
     }
@@ -48,11 +64,18 @@ class Scheduler {
             }
         }
     }
-    getFormItem(name:string = 'default') : schedulerFormItem{
+    getFormItem(name:string = 'ease-form-default-item') : schedulerFormItem{
         return this.formItems.find(item => item.component.name === name)
     }
-    getSlot(slotName:string,name:string = 'default') : CompOptions {
-        return this.slot[slotName].find(item => item.name === name)
+    getSlot(slotName:string,name:string = 'ease-form-default') : CompOptions {
+        if(slotName in this.slot){
+            return this.slot[slotName].find(item => {
+                let compName = item.internal ? `${name}-${slotName}` : slotName
+                return item.name === compName
+            })
+        }else{
+            console.warn(`slot template '${slotName}' was not exsist!`)
+        }
     }
     // private check(comp:CompOptions){
     //     if(comp.name){
@@ -61,16 +84,5 @@ class Scheduler {
     // }
 }
 
-const com = {
-    name:'test',
-    methods:{
-
-    }
-}
-
 export const scheduler = new Scheduler()
 
-scheduler.addFormItem([{
-    slots:['lt'],
-    component:com
-}])

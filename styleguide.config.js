@@ -22,7 +22,7 @@ const sections = (() => {
   return [
     {
       name: 'Components',
-      components: 'src/index.ts',
+      components: 'src/template/ease-form.ts',
       usageMode: 'expand'
     },
     {
@@ -45,7 +45,7 @@ module.exports = {
   require: ['./styleguide'],
   webpackConfig: {
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.jsx']
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue', '.css']
     },
     module: {
       rules: [
@@ -61,7 +61,10 @@ module.exports = {
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          options: {
+            appendTsSuffixTo: [/\.vue$/]
+          }
         },
         {
           test: /\.css$/,

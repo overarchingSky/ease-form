@@ -1,4 +1,4 @@
-import annotationDefault from './annotation-default.vue'
+import Default from './default.vue'
 export default [
-    annotationDefault
+    Default
 ]

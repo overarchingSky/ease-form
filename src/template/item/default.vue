@@ -8,10 +8,11 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+export default {
+  name: 'ease-form-default-item',
   props: {},
-  components: {}
-})
+  components: {},
+  slots: ['label', 'error', 'annotation', 'default']
+}
 </script>
 <style lang="less"></style>

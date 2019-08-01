@@ -1,4 +1,6 @@
-import labelDefault from './label-default.vue'
+import Default from './default.vue'
+import TlLabel from './tllabel.vue'
 export default [
-    labelDefault
+    Default,
+    TlLabel
 ]
