@@ -1,4 +1,9 @@
-import {  CompOptions } from './comp-options.d';
+//import {  CompOptions } from './comp-options.d';
+
+declare interface schedulerInput {
+    advance: boolean;
+    component: CompOptions;
+}
 
 declare interface schedulerSlots {
     [propsName: string]: CompOptions[];

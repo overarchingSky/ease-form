@@ -1,7 +1,5 @@
 import Vue from 'vue'
-//import Elm from 'element-ui'
-//import 'element-ui/lib/theme-chalk/index.css'
-import UploadToAli from '@femessage/upload-to-ali'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
-//Vue.use(Elm)
-Vue.component('upload-to-ali', UploadToAli)
+Vue.use(ElementUI)

@@ -1,6 +1,6 @@
 
 import { CompOptions } from './../../types/comp-options.d';
-import { scheduler } from './scheduler';
+import scheduler from './scheduler';
 import { VNodeData } from 'vue/types/vnode';
 import { CreateElement } from 'vue';
 import { Field } from "../../types/field";
@@ -36,20 +36,26 @@ function resoveSlots(formItemSlots:string[],FieldConfig:Field,formValue:obj){
     const scopedSlots:obj = {}
     const slotComponentConfig = FieldConfig.slots
     formItemSlots.forEach((slotName:string) => {
-        if(slotName !== 'default'){
-            const slotFillCompName:string = slotComponentConfig[slotName]
-            const component:CompOptions = scheduler.getSlot(slotName,slotFillCompName)
-            console.log('slotName',slotFillCompName,component)
-            scopedSlots[slotName] = () => {
-                return h(component)
-            }
-        }else{
-            slotComponentConfig.default && (scopedSlots.default = () => {
-                let isVueComp = typeof slotComponentConfig.default !== 'string'
-                let opt = initEvent(FieldConfig,formValue)
-                return h(FieldConfig.slots.default,opt)
-            })
+        const slotFillCompName:string = slotComponentConfig[slotName]
+        const component:CompOptions = scheduler.getSlot(slotName,slotFillCompName)
+        console.log('slotName',slotFillCompName,component)
+        scopedSlots[slotName] = () => {
+            return h(component)
         }
+        // if(slotName !== 'default'){
+        //     const slotFillCompName:string = slotComponentConfig[slotName]
+        //     const component:CompOptions = scheduler.getSlot(slotName,slotFillCompName)
+        //     console.log('slotName',slotFillCompName,component)
+        //     scopedSlots[slotName] = () => {
+        //         return h(component)
+        //     }
+        // }else{
+        //     slotComponentConfig.default && (scopedSlots.default = () => {
+        //         let isVueComp = typeof slotComponentConfig.default !== 'string'
+        //         let opt = initEvent(FieldConfig,formValue)
+        //         return h(FieldConfig.slots.default,opt)
+        //     })
+        // }
     })
     
     

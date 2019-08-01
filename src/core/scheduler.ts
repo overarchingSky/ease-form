@@ -4,22 +4,34 @@ import DefaultAnnotation from '../template/annotation'
 import DefaultLabels from '../template/label'
 import DefaultContents from '../template/content'
 import DefaultErrors from '../template/error'
-import { schedulerFormItem, schedulerSlots } from '../../types/scheduler';
+import DefaultInputs from '../template/input'
+import { schedulerFormItem, schedulerSlots, schedulerInput } from '../../types/scheduler';
 import { signAsInternalComp } from '../utils';
+import { Input } from '../../types/input-types';
 
 class Scheduler {
+    input:Input = {
+        base:[],
+        advance:[]
+    }
     formItems: schedulerFormItem[] = []
     slot:{
         annotation:CompOptions[]
         label:CompOptions[]
         contnet:CompOptions[]
         error:CompOptions[]
+        //基础输入类型
+        defalut:CompOptions[]
+        //高阶输入类型
+        advanceInput:CompOptions[]
         [key:string]:CompOptions[]
     } = {
         annotation:[],
         label:[],
         contnet:[],
-        error:[]
+        error:[],
+        defalut:[],
+        advanceInput:[]
     }
     constructor(){
         let slot = this.slot
@@ -31,11 +43,13 @@ class Scheduler {
         signAsInternalComp(DefaultLabels)
         signAsInternalComp(DefaultContents)
         signAsInternalComp(DefaultErrors)
+        signAsInternalComp(DefaultInputs)
         this.addFormItem(DefaultItems)
         slot.annotation = DefaultAnnotation
         slot.label = DefaultLabels
         slot.contnet = DefaultContents
         slot.error = DefaultErrors
+        slot.defalut = DefaultInputs
     }
     addFormItem ( arg: (schedulerFormItem|CompOptions)[] ) : void {
         this.formItems = this.formItems || []
@@ -64,6 +78,20 @@ class Scheduler {
             }
         }
     }
+    addInput(arg: schedulerInput[]){
+        let comps:CompOptions[] = arg.map((item:schedulerInput) => {
+            return item.component
+        })
+        let base = arg.filter((item:schedulerInput) => {
+            return !item.advance
+        )
+        let advance = arg.filter((item:schedulerInput) => {
+            return item.advance
+        )
+        this.slot.default = [...this.slot.default,...comps]
+        this.input.base = [...this.input.base,...base]
+        this.input.advance = [...this.input.advance,...advance]
+    }
     getFormItem(name:string = 'ease-form-default-item') : schedulerFormItem{
         return this.formItems.find(item => item.component.name === name)
     }
@@ -77,6 +105,9 @@ class Scheduler {
             console.warn(`slot template '${slotName}' was not exsist!`)
         }
     }
+    getInputs(){
+        return this.slot.defalut
+    }
     // private check(comp:CompOptions){
     //     if(comp.name){
 
@@ -84,5 +115,5 @@ class Scheduler {
     // }
 }
 
-export const scheduler = new Scheduler()
+export default new Scheduler()
 

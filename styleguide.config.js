@@ -21,8 +21,13 @@ const sections = (() => {
   })
   return [
     {
+      name: 'design',
+      components: 'src/design/ease-form-design.vue'
+      //usageMode: 'expand'
+    },
+    {
       name: 'Components',
-      components: 'src/template/ease-form.ts',
+      components: ['src/template/ease-form.ts'],
       usageMode: 'expand'
     },
     {
@@ -45,7 +50,7 @@ module.exports = {
   require: ['./styleguide'],
   webpackConfig: {
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue', '.css']
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue', '.css', '.less']
     },
     module: {
       rules: [
@@ -57,6 +62,10 @@ module.exports = {
           test: /\.js?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
+        },
+        {
+          test: /\.less$/,
+          use: ['vue-style-loader', 'css-loader', 'less-loader']
         },
         {
           test: /\.tsx?$/,

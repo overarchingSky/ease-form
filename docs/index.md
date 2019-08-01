@@ -11,11 +11,7 @@ export default {
                 {
                     field:'name',
                     slots:{
-                        default:{
-                            render(h){
-                                return h('input')
-                            }
-                        },
+                        default:'text',
                         label:'tllabel'
                     }
                 }
