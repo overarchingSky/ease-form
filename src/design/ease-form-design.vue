@@ -7,19 +7,39 @@
           <el-tab-pane label="组件">
             <form-item-selector></form-item-selector>
           </el-tab-pane>
-          <el-tab-pane label="选项"> </el-tab-pane>
+          <el-tab-pane label="选项"></el-tab-pane>
         </el-tabs>
       </div>
-      <div class="ease-design-layout__content"></div>
-      <div class="ease-design-layout__code"></div>
+      <div class="ease-design-layout__content">
+        <form-viewer v-model="config"></form-viewer>
+      </div>
+      <div class="ease-design-layout__code">
+        <code-editor v-model="config"></code-editor>
+      </div>
     </main>
   </div>
 </template>
 <script lang="ts">
 import FormItemSelector from './components/form-item-selector.vue'
+import FormViewer from './components/form-viewer'
+import codeEditor from './components/code-editor'
 export default {
   components: {
-    FormItemSelector
+    FormItemSelector,
+    FormViewer,
+    codeEditor
+  },
+  data() {
+    return {
+      config: [
+        {
+          field: 'name',
+          slots: {
+            default: 'text'
+          }
+        }
+      ]
+    }
   }
 }
 </script>
@@ -44,5 +64,10 @@ export default {
       width: 300px;
     }
   }
+}
+
+.ease-form-ghost {
+  background-color: #f5f5f5;
+  border: 1px dashed #999;
 }
 </style>

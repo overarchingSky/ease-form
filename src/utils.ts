@@ -12,3 +12,71 @@ export function signAsInternalComp(Comps:CompOptions[]){
         item.internal = true
     })
 }
+
+/**
+ * generate default field config
+ * @param type input type, such as:text number date etc.
+ */
+export function generateFieldConfig(type:string){
+    return {
+        field:`field-${Date.now()}`,
+        slots:{
+            default:type
+        }
+    }
+}
+
+
+export function stringifyObj(src){
+    return JSON.stringify(src)
+}
+
+export function StringFunction(src:obj[]|obj){
+    if((src as obj[]).push){
+        return src.map(item => {
+            let newObj = {}
+            for(var key in item){
+                if(item.hasOwnProperty(key) && item[key] instanceof Function){
+                    newObj[key] = item[key].toString().replace(/[\n\t]/g,"");
+                    continue;
+                }
+                // 如果为数组或者obj，则递归
+                // else if(item[key]){
+
+                // }
+                newObj[key] = item[key];
+            }
+            return newObj
+        })
+    }else{
+        let newObj = {}
+        for(var key in src){
+            if(src.hasOwnProperty(key) && src[key] instanceof Function){
+                newObj[key] = src[key].toString().replace(/[\n\t]/g,"");
+                continue;
+            }
+            newObj[key] = src[key];
+        }
+        return newObj
+    }
+}
+
+
+export function parseObj(strObj){
+    return JSON.parse(strObj)
+    // var obj = JSON.parse(strObj);
+    // var funReg = /function\s\(.*\)/;
+    // for(var key in obj){
+    //     if(funReg.test(obj[key])){
+    //         try{
+    //             var fun = (new Function("return " + obj[key]))();
+    //             if(fun instanceof Function){
+    //                 obj[key] = fun;
+    //             }
+    //         }catch(e){
+    //             console.log(e)
+    //         }
+    //     }
+    // }
+    // return obj;
+}

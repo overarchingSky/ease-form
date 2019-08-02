@@ -30,15 +30,17 @@ export default Vue.extend({
         },
         config:{
             handler(){
+                console.log('shoule update ease-form')
                 this._config = init(this.config,this.formValue)
             },
             deep:true
         }
     },
     render(h:CreateElement) : VNode{
+        console.log('this.$slots',this.$slots)
         return h('form',{
-            class:'ease-form'
-        },[this._config.map((Field:Field) => {
+            class:'ease-form',
+        }, [this._config.map((Field:Field) => {
             return h(Field._formItem,{
                 scopedSlots:Field.transmit.scopedSlots
             })

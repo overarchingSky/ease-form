@@ -1,6 +1,7 @@
 import { CompOptions } from "./comp-options";
 
 declare interface Input {
-    base:string[];
+    base:CompOptions[];
     advance:CompOptions[];
+    [key:string]:CompOptions[];
 }

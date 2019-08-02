@@ -1,4 +1,4 @@
-//import {  CompOptions } from './comp-options.d';
+import {  CompOptions } from './comp-options.d';
 
 declare interface schedulerInput {
     advance: boolean;

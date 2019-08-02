@@ -1,6 +1,6 @@
 <template>
-  <div>
-    annotation
+  <div class="ease-form-annotation-default">
+    描述此字段
   </div>
 </template>
 <script lang="ts">
@@ -10,4 +10,12 @@ export default {
   components: {}
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.ease-form-annotation-default {
+  border-left: 4px solid #dcdcdc;
+  margin: 5px 0;
+  line-height: 1.5;
+  text-indent: 1em;
+  background-color: #f5f7fa;
+}
+</style>

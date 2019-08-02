@@ -21,7 +21,7 @@ class Scheduler {
         contnet:CompOptions[]
         error:CompOptions[]
         //基础输入类型
-        defalut:CompOptions[]
+        default:CompOptions[]
         //高阶输入类型
         advanceInput:CompOptions[]
         [key:string]:CompOptions[]
@@ -30,7 +30,7 @@ class Scheduler {
         label:[],
         contnet:[],
         error:[],
-        defalut:[],
+        default:[],
         advanceInput:[]
     }
     constructor(){
@@ -43,13 +43,16 @@ class Scheduler {
         signAsInternalComp(DefaultLabels)
         signAsInternalComp(DefaultContents)
         signAsInternalComp(DefaultErrors)
-        signAsInternalComp(DefaultInputs)
+        //signAsInternalComp(DefaultInputs)
         this.addFormItem(DefaultItems)
+        this.addInput(DefaultInputs.map(input => ({
+            advance:false,
+            component:input
+        })))
         slot.annotation = DefaultAnnotation
         slot.label = DefaultLabels
         slot.contnet = DefaultContents
         slot.error = DefaultErrors
-        slot.defalut = DefaultInputs
     }
     addFormItem ( arg: (schedulerFormItem|CompOptions)[] ) : void {
         this.formItems = this.formItems || []
@@ -82,12 +85,19 @@ class Scheduler {
         let comps:CompOptions[] = arg.map((item:schedulerInput) => {
             return item.component
         })
-        let base = arg.filter((item:schedulerInput) => {
-            return !item.advance
-        )
-        let advance = arg.filter((item:schedulerInput) => {
-            return item.advance
-        )
+        let base = arg.reduce((res:CompOptions[],item:schedulerInput) => {
+            if(!item.advance){
+                res.push(item.component)
+            }
+            return res
+        },[])
+        let advance = arg.reduce((res:CompOptions[],item:schedulerInput) => {
+            if(item.advance){
+                res.push(item.component)
+            }
+            return res
+        },[])
+        console.log('this.slot.default',this.slot.default)
         this.slot.default = [...this.slot.default,...comps]
         this.input.base = [...this.input.base,...base]
         this.input.advance = [...this.input.advance,...advance]
@@ -105,8 +115,8 @@ class Scheduler {
             console.warn(`slot template '${slotName}' was not exsist!`)
         }
     }
-    getInputs(){
-        return this.slot.defalut
+    getInput(type:string) : CompOptions{
+        return this.slot.default.find(item => item.type === type)
     }
     // private check(comp:CompOptions){
     //     if(comp.name){

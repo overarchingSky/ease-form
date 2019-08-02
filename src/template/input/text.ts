@@ -1,7 +1,9 @@
 import { CreateElement } from "vue";
 
 export default {
-    name:'text',
+    name:'ease-form-input-text',
+    alias:'text',
+    type:'text',
     render(h:CreateElement){
         return h('input',{
             attrs:{

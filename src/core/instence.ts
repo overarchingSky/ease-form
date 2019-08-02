@@ -15,6 +15,7 @@ export function setVM(vm:any){
 }
 
 export function init(config:Field[],formValue:obj = {}) : ResolvedField[] {
+    config =JSON.parse(JSON.stringify(config))
     return config.map((fieldConfig:Field):ResolvedField => {
         const formItem: schedulerFormItem = scheduler.getFormItem(fieldConfig.formItem)
         const slotsComponentConfig:string[] = formItem.slots
@@ -37,8 +38,13 @@ function resoveSlots(formItemSlots:string[],FieldConfig:Field,formValue:obj){
     const slotComponentConfig = FieldConfig.slots
     formItemSlots.forEach((slotName:string) => {
         const slotFillCompName:string = slotComponentConfig[slotName]
-        const component:CompOptions = scheduler.getSlot(slotName,slotFillCompName)
-        console.log('slotName',slotFillCompName,component)
+        let component:CompOptions
+        if(slotName === 'default') {
+            component = scheduler.getInput(slotFillCompName)
+        }else{
+            component = scheduler.getSlot(slotName,slotFillCompName)
+        }
+        console.log('slotName',slotName,slotFillCompName,component)
         scopedSlots[slotName] = () => {
             return h(component)
         }

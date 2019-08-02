@@ -5,4 +5,5 @@ export interface CompOptions extends ComponentOptions <Vue> {
     //是否是内置组件模板
     internal?:boolean;
     slots?:string[];
+    type?:string;
 }
