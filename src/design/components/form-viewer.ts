@@ -38,12 +38,16 @@ export default {
             }
         }, [this.resolvedConfig.map((Field:Field) => {
             return h(Field._formItem,{
+                class:this.currentActiveFeild === Field && 'active',
                 style:{
                     userSelect:'none',
                     cursor:'grab'
                 },
                 key:Field.field,
-                scopedSlots:Field.transmit.scopedSlots
+                scopedSlots:Field.transmit.scopedSlots,
+                nativeOn:{
+                    click:_ => this.clickHandler(Field)
+                }
             })
         })])
     },
@@ -58,6 +62,7 @@ export default {
     },
     data(){
         return {
+            currentActiveFeild:{},
             resolvedConfig:[]
         }
     },
@@ -75,6 +80,10 @@ export default {
             this.config.splice(newIndex,0,generateFieldConfig(input.type))
             console.log('add',this.config)
             this.$emit('input',this.config)
+        },
+        clickHandler(field:any){
+            this.currentActiveFeild = field
+            this.$emit('select-field',field)
         }
     }
 }

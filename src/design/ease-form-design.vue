@@ -7,11 +7,16 @@
           <el-tab-pane label="组件">
             <form-item-selector></form-item-selector>
           </el-tab-pane>
-          <el-tab-pane label="选项"></el-tab-pane>
+          <el-tab-pane label="选项">
+            <field-setting v-model="currentFieldConfig"></field-setting>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div class="ease-design-layout__content">
-        <form-viewer v-model="config"></form-viewer>
+        <form-viewer
+          v-model="config"
+          @select-field="setCurrentField"
+        ></form-viewer>
       </div>
       <div class="ease-design-layout__code">
         <code-editor v-model="config"></code-editor>
@@ -21,13 +26,16 @@
 </template>
 <script lang="ts">
 import FormItemSelector from './components/form-item-selector.vue'
+import FieldSetting from '././components/field-setting.vue'
 import FormViewer from './components/form-viewer'
 import codeEditor from './components/code-editor'
+import {Field} from '../../types/field'
 export default {
   components: {
     FormItemSelector,
     FormViewer,
-    codeEditor
+    codeEditor,
+    FieldSetting
   },
   data() {
     return {
@@ -38,7 +46,13 @@ export default {
             default: 'text'
           }
         }
-      ]
+      ],
+      currentFieldConfig: {}
+    }
+  },
+  methods: {
+    setCurrentField(config: Field) {
+      this.currentFieldConfig = config
     }
   }
 }
