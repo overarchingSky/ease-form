@@ -20,10 +20,22 @@ export function signAsInternalComp(Comps:CompOptions[]){
 export function generateFieldConfig(type:string){
     return {
         field:`field-${Date.now()}`,
+        formItem:'ease-form-default-item',
         slots:{
-            default:type
+            default:type,
+            label: "ease-form-default-label",
+            error: "ease-form-default-error",
+            annotation: "ease-form-default-annotation"
         }
     }
+}
+
+export function formateSelectorOptions(options){
+    options.unshift({
+        label:'none',
+        value:''
+    })
+    return options
 }
 
 

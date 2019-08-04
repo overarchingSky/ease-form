@@ -8,6 +8,7 @@ import DefaultInputs from '../template/input'
 import { schedulerFormItem, schedulerSlots, schedulerInput } from '../../types/scheduler';
 import { signAsInternalComp } from '../utils';
 import { Input } from '../../types/input-types';
+import { CreateElement } from 'vue';
 
 class Scheduler {
     input:Input = {
@@ -22,8 +23,6 @@ class Scheduler {
         error:CompOptions[]
         //基础输入类型
         default:CompOptions[]
-        //高阶输入类型
-        advanceInput:CompOptions[]
         [key:string]:CompOptions[]
     } = {
         annotation:[],
@@ -31,7 +30,6 @@ class Scheduler {
         contnet:[],
         error:[],
         default:[],
-        advanceInput:[]
     }
     constructor(){
         let slot = this.slot
@@ -105,11 +103,14 @@ class Scheduler {
     getFormItem(name:string = 'ease-form-default-item') : schedulerFormItem{
         return this.formItems.find(item => item.component.name === name)
     }
+    getGroupedSlots(slotName:string) : CompOptions[]{
+        return this.slot[slotName] || []
+    }
     getSlot(slotName:string,name:string = 'ease-form-default') : CompOptions {
         if(slotName in this.slot){
             return this.slot[slotName].find(item => {
-                let compName = item.internal ? `${name}-${slotName}` : slotName
-                return item.name === compName
+                //let compName = item.internal ? `${name}-${slotName}` : slotName
+                return item.name === name
             })
         }else{
             console.warn(`slot template '${slotName}' was not exsist!`)
@@ -125,5 +126,14 @@ class Scheduler {
     // }
 }
 
-export default new Scheduler()
+let scheduler = new Scheduler()
+
+scheduler.addFormItem([{
+    name:'my-form-item',
+    slots:['default','test-label'],
+    render(h:CreateElement){
+      return h('div','my-form-item')
+    }
+  }])
+export default scheduler
 

@@ -14,6 +14,9 @@ export default {
     computed:{
         config(){
             return JSON.parse(JSON.stringify(this.value))
+        },
+        currentActiveFeild(){
+            return this.resolvedConfig[this.currentActiveFeildIndex]
         }
     },
     components:{
@@ -36,9 +39,9 @@ export default {
             on:{
                 add:this.updateConfig
             }
-        }, [this.resolvedConfig.map((Field:Field) => {
+        }, [this.resolvedConfig.map((Field:Field,index:number) => {
             return h(Field._formItem,{
-                class:this.currentActiveFeild === Field && 'active',
+                class:this.currentActiveFeildIndex === index && 'active',
                 style:{
                     userSelect:'none',
                     cursor:'grab'
@@ -46,7 +49,7 @@ export default {
                 key:Field.field,
                 scopedSlots:Field.transmit.scopedSlots,
                 nativeOn:{
-                    click:_ => this.clickHandler(Field)
+                    click:_ => this.clickHandler(index,Field)
                 }
             })
         })])
@@ -62,6 +65,7 @@ export default {
     },
     data(){
         return {
+            currentActiveFeildIndex:null,
             currentActiveFeild:{},
             resolvedConfig:[]
         }
@@ -81,9 +85,9 @@ export default {
             console.log('add',this.config)
             this.$emit('input',this.config)
         },
-        clickHandler(field:any){
-            this.currentActiveFeild = field
-            this.$emit('select-field',field)
+        clickHandler(index:number,field:any){
+            this.currentActiveFeildIndex = index
+            this.$emit('select-field',index,field)
         }
     }
 }
