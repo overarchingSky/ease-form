@@ -15,9 +15,6 @@ export default {
         config(){
             return JSON.parse(JSON.stringify(this.value))
         },
-        currentActiveFeild(){
-            return this.resolvedConfig[this.currentActiveFeildIndex]
-        }
     },
     components:{
         
@@ -40,18 +37,32 @@ export default {
                 add:this.updateConfig
             }
         }, [this.resolvedConfig.map((Field:Field,index:number) => {
-            return h(Field._formItem,{
-                class:this.currentActiveFeildIndex === index && 'active',
+            const activeClassName = this.currentActiveFeild.id === Field.id && 'active'
+            return h('div',{
+                class:`ease-form-row ${activeClassName}`,
                 style:{
-                    userSelect:'none',
-                    cursor:'grab'
-                },
-                key:Field.field,
-                scopedSlots:Field.transmit.scopedSlots,
-                nativeOn:{
-                    click:_ => this.clickHandler(index,Field)
+                    alignItems:'center'
                 }
-            })
+            },[
+                h(Field._formItem,{
+                    style:{
+                        userSelect:'none',
+                        cursor:'grab',
+                        flex:1
+                    },
+                    key:Field.id,
+                    scopedSlots:Field.transmit.scopedSlots,
+                    nativeOn:{
+                        click:_ => this.clickHandler(index,Field)
+                    }
+                }),
+                h('div',{
+                    class:'ease-form-delete',
+                    on:{
+                        click: _ => this.deleteField(index)
+                    }
+                },'×')
+            ])
         })])
     },
     watch:{
@@ -65,7 +76,6 @@ export default {
     },
     data(){
         return {
-            currentActiveFeildIndex:null,
             currentActiveFeild:{},
             resolvedConfig:[]
         }
@@ -85,8 +95,14 @@ export default {
             console.log('add',this.config)
             this.$emit('input',this.config)
         },
+        deleteField(index){
+            this.config.splice(index,1)
+            this.$emit('clear-select-field')
+            this.$emit('input',this.config)
+            console.log('delete',index,this.config)
+        }, 
         clickHandler(index:number,field:any){
-            this.currentActiveFeildIndex = index
+            this.currentActiveFeild = field
             this.$emit('select-field',index,field)
         }
     }

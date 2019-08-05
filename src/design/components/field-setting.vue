@@ -15,17 +15,17 @@
       <el-input v-model="value.field" clearable></el-input>
     </el-form-item>
     <el-collapse v-model="activeNames">
-      <el-collapse-item title="prop:" name="props">
+      <el-collapse-item title="Text:" name="Text">
         <el-form-item
-          v-for="(slotName, index) in slotNames"
+          v-for="(text, index) in Texts"
           :key="index"
-          :label="slotName"
-          :label-width="getLabelWidth(slotNames)"
+          :label="text"
+          :label-width="getLabelWidth(Texts)"
         >
-          <el-input v-model="value.label" clearable></el-input>
+          <el-input v-model="value[text]" clearable></el-input>
         </el-form-item>
       </el-collapse-item>
-      <el-collapse-item title="slots:" name="slots">
+      <el-collapse-item title="Slots:" name="Slots">
         <el-form-item
           v-for="(slotName, index) in slotNames"
           :key="index"
@@ -66,8 +66,12 @@ export default {
         .getFormItem(this.value.formItem)
         .slots.filter(slotName => slotName !== 'default')
     },
-    props() {
-      return [] //scheduler.getFormItem(this.value.slots.)
+    Texts() {
+      let texts = this.slotNames.filter(
+        slotName => !!this.value.slots[slotName]
+      )
+      texts.push('placeholder')
+      return texts
     },
     formItemTemplates() {
       return scheduler.formItems.map(item => {
@@ -80,7 +84,7 @@ export default {
   },
   data() {
     return {
-      activeNames: ['props', 'slots']
+      activeNames: ['Text', 'Slots']
     }
   },
   methods: {

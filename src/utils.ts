@@ -17,16 +17,20 @@ export function signAsInternalComp(Comps:CompOptions[]){
  * generate default field config
  * @param type input type, such as:text number date etc.
  */
+//待拓展，用户可自定义默认值
 export function generateFieldConfig(type:string){
     return {
-        field:`field-${Date.now()}`,
+        id:Math.ceil(Math.random() * 10000) + Date.now(),
+        field:`field`,
         formItem:'ease-form-default-item',
+        label:'label',
+        annotation:'field desc',
         slots:{
             default:type,
             label: "ease-form-default-label",
             error: "ease-form-default-error",
             annotation: "ease-form-default-annotation"
-        }
+        },
     }
 }
 

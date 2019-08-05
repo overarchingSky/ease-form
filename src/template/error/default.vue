@@ -1,12 +1,16 @@
 <template>
   <div class="ease-form-error-default">
-    哈哈
+    {{ text }}
   </div>
 </template>
 <script lang="ts">
 export default {
   name: 'ease-form-default-error',
-  props: {},
+  props: {
+    text: {
+      type: String
+    }
+  },
   components: {}
 }
 </script>

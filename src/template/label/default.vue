@@ -1,11 +1,13 @@
 <template>
-  <label for="for">label</label>
+  <label for="for">
+    {{ text }}
+  </label>
 </template>
 <script lang="ts">
 export default {
   name: 'ease-form-default-label',
   props: {
-    label: {
+    text: {
       type: String
     },
     for: {

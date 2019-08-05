@@ -15,7 +15,7 @@ export default {
             type:Array
         },
         activeKey:{
-            type:String
+            type:Number
         }
     },
     computed:{
@@ -64,7 +64,8 @@ export default {
         })
     },
     methods:{
-        scrollFeild(fieldName){
+        scrollFeild(id){
+            console.log('id',id)
             let lineCount = this.codemirror.lineCount()
             let startIndex = -1
             let endIndex = -1
@@ -83,7 +84,7 @@ export default {
                     if(/{/.test(text)){
                         deep++
                     }
-                }else if((new RegExp(fieldName)).test(text)){
+                }else if((new RegExp(id)).test(text)){
                     startIndex = i - 1
                 }
             }

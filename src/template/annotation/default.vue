@@ -1,12 +1,16 @@
 <template>
   <div class="ease-form-annotation-default">
-    描述此字段
+    {{ text }}
   </div>
 </template>
 <script lang="ts">
 export default {
   name: 'ease-form-default-annotation',
-  props: {},
+  props: {
+    text: {
+      type: String
+    }
+  },
   components: {}
 }
 </script>

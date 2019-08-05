@@ -11,13 +11,17 @@
           <form-item-selector></form-item-selector>
         </el-tab-pane>
         <el-tab-pane label="选项" name="setting">
-          <field-setting v-model="currentFieldConfig"></field-setting>
+          <field-setting
+            v-if="showSettingPanel"
+            v-model="currentFieldConfig"
+          ></field-setting>
         </el-tab-pane>
       </el-tabs>
       <form-viewer
         class="ease-design-layout__content"
         v-model="config"
         @select-field="setCurrentField"
+        @clear-select-field="clearCurrentField"
       ></form-viewer>
       <code-editor
         class="ease-design-layout__code"
@@ -43,22 +47,28 @@ export default {
   data() {
     return {
       config: [],
-      currentFieldIndex: {},
+      currentFieldIndex: -1,
       activeTab: 'types'
     }
   },
   computed: {
+    showSettingPanel() {
+      return this.currentFieldIndex > -1
+    },
     currentFieldConfig() {
       return this.config[this.currentFieldIndex]
     },
     activeKey() {
-      return this.currentFieldConfig && this.currentFieldConfig.field
+      return this.currentFieldConfig && this.currentFieldConfig.id
     }
   },
   methods: {
     setCurrentField(index: number, config: Field) {
       this.currentFieldIndex = index
       this.activeTab = 'setting'
+    },
+    clearCurrentField() {
+      this.currentFieldIndex = -1
     }
   }
 }

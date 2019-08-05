@@ -2,7 +2,6 @@ import { CompOptions } from './../../types/comp-options.d';
 import DefaultItems from '../template/item'
 import DefaultAnnotation from '../template/annotation'
 import DefaultLabels from '../template/label'
-import DefaultContents from '../template/content'
 import DefaultErrors from '../template/error'
 import DefaultInputs from '../template/input'
 import { schedulerFormItem, schedulerSlots, schedulerInput } from '../../types/scheduler';
@@ -39,7 +38,6 @@ class Scheduler {
         signAsInternalComp(DefaultItems)
         signAsInternalComp(DefaultAnnotation)
         signAsInternalComp(DefaultLabels)
-        signAsInternalComp(DefaultContents)
         signAsInternalComp(DefaultErrors)
         //signAsInternalComp(DefaultInputs)
         this.addFormItem(DefaultItems)
@@ -49,7 +47,6 @@ class Scheduler {
         })))
         slot.annotation = DefaultAnnotation
         slot.label = DefaultLabels
-        slot.contnet = DefaultContents
         slot.error = DefaultErrors
     }
     addFormItem ( arg: (schedulerFormItem|CompOptions)[] ) : void {
