@@ -6,7 +6,7 @@ import { CreateElement } from 'vue';
 import { Field } from "../../types/field";
 import { schedulerFormItem } from '../../types/scheduler';
 import { ResolvedField } from '../../types/resolved-field';
-
+import './validate'
 let formVm:any;
 let h:CreateElement;
 export function setVM(vm:any){
@@ -51,8 +51,14 @@ function resoveSlots(formItemSlots:string[],FieldConfig:Field,formValue:obj){
     return scopedSlots
 }
 
+// function initVNodeData(FieldConfig:Field,formValue:obj){
+//     return 
+//     initInput(FieldConfig,formValue)
+// }
+
 function initInput(FieldConfig:Field,formValue:obj){
     const slotComponentConfig = FieldConfig.slots
+    const validate = FieldConfig.validate
     let opt:VNodeData = {
         props:{
             value: formValue[FieldConfig.field],
@@ -64,7 +70,14 @@ function initInput(FieldConfig:Field,formValue:obj){
                 formValue[FieldConfig.field] = value
                 formVm.$emit('input',{...formValue})
             }
-        }
+        },
+        directives:[{
+            name: 'validate',
+            value: validate.rules,
+            //expression: '',
+            arg: 'currentValue.' + FieldConfig.field,
+            modifiers: validate.trigger.options
+          }]
     }
     return opt
 }

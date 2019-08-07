@@ -31,6 +31,15 @@ export function generateFieldConfig(type:string){
             error: "ease-form-default-error",
             annotation: "ease-form-default-annotation"
         },
+        validate:{
+            rules:[],
+            trigger:{
+                events:'',
+                options:{
+                    
+                }
+            }
+        }
     }
 }
 

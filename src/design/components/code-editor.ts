@@ -12,14 +12,23 @@ export default {
     name:'code-editor',
     props:{
         value:{
-            type:Array
+            type:[Array,Object,String]
         },
         activeKey:{
             type:Number
+        },
+        type:{
+            type:String
+        },
+        readOnly:{
+            type:Boolean
         }
     },
     computed:{
         _value(){
+            if(typeof this.value === 'string'){
+                return this.value
+            }
             return jsBeautify(stringifyObj(this.value))
         },
         codemirror(){

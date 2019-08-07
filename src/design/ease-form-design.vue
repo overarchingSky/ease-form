@@ -4,7 +4,7 @@
     <main class="ease-design-layout">
       <el-tabs
         class="ease-design-layout__ctrl"
-        v-model="activeTab"
+        v-model="activeSetting"
         type="border-card"
       >
         <el-tab-pane label="组件" name="types">
@@ -20,14 +20,36 @@
       <form-viewer
         class="ease-design-layout__content"
         v-model="config"
-        @select-field="setCurrentField"
+        @select-field="setSettingPanelType"
         @clear-select-field="clearCurrentField"
       ></form-viewer>
-      <code-editor
+      <el-tabs
         class="ease-design-layout__code"
-        :active-key="activeKey"
-        v-model="config"
-      ></code-editor>
+        v-model="activeCode"
+        type="border-card"
+      >
+        <!-- <el-tab-pane label="html" name="html">
+          <code-editor
+            class="ease-design-layout__code--html"
+            :active-key="activeKey"
+            v-model="html"
+          ></code-editor>
+        </el-tab-pane> -->
+        <el-tab-pane label="js" name="js">
+          <code-editor
+            class="ease-design-layout__code--js"
+            :active-key="activeKey"
+            v-model="config"
+          ></code-editor>
+        </el-tab-pane>
+        <el-tab-pane label="i18n" name="i18n">
+          <code-editor
+            class="ease-design-layout__code--i18n"
+            :active-key="activeKey"
+            v-model="config"
+          ></code-editor>
+        </el-tab-pane>
+      </el-tabs>
     </main>
   </div>
 </template>
@@ -47,8 +69,10 @@ export default {
   data() {
     return {
       config: [],
+      html: `<ease-form v-model="formValue" :config="config" :dictionary="dictionary"></ease-form>`,
       currentFieldIndex: -1,
-      activeTab: 'types'
+      activeSetting: 'types',
+      activeCode: 'js'
     }
   },
   computed: {
@@ -63,9 +87,9 @@ export default {
     }
   },
   methods: {
-    setCurrentField(index: number, config: Field) {
+    setSettingPanelType(index: number, config: Field) {
       this.currentFieldIndex = index
-      this.activeTab = 'setting'
+      this.activeSetting = 'setting'
     },
     clearCurrentField() {
       this.currentFieldIndex = -1
@@ -100,6 +124,21 @@ export default {
 
     &__code {
       width: 410px;
+      display: flex;
+      flex-direction: column;
+
+      .el-tabs__content {
+        flex: 1;
+        padding: 0;
+
+        .el-tab-pane {
+          height: 100%;
+
+          > div {
+            height: 100%;
+          }
+        }
+      }
     }
 
     .el-tabs--border-card {

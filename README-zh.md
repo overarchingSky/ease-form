@@ -13,8 +13,13 @@
 
 - [el-form-renderer](#el-form-renderer)
   - [Introduction](#Introduction)
-    - [内部集成](#%E5%86%85%E9%83%A8%E9%9B%86%E6%88%90)
-    - [外部扩展](#%E5%A4%96%E9%83%A8%E6%89%A9%E5%B1%95)
+    - [拓展 form-item](#%E6%8B%93%E5%B1%95form-item)
+    - [拓展 slot](#%E6%8B%93%E5%B1%95slot)
+  - [表单验证](#%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81)
+    - [验证器拓展](#%E9%AA%8C%E8%AF%81%E5%99%A8%E6%8B%93%E5%B1%95)
+  - [自动计算](#%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97)
+  - [远程选项](#%E8%BF%9C%E7%A8%8B%E9%80%89%E9%A1%B9)
+  - [动态字段](#%E5%8A%A8%E6%80%81%E5%AD%97%E6%AE%B5)
   - [Feature](#Feature)
   - [Links](#Links)
   - [Quick Start](#Quick-Start)
@@ -30,13 +35,13 @@
 
 可以说 el-form-renderer 是核心，扮演着枢纽的角色
 
-### 内部集成
+### 拓展 form-item
 
 el-data-table、el-data-tree 等组件内部集成该组件，用于更加灵活的配置内部表单渲染的场景。
 
 以 el-data-table 为例，我们知道通过 el-data-table 可以快速生成一个列表的 CRUD 页面。而其中的搜索框，新增编辑的内容弹框，就是由 el-form-renderer 生成的。通过传入对应的配置项，就能生成相应的内容，不需要写 template。
 
-### 外部扩展
+### 拓展 slot
 
 在一些表单项场景，el-form-renderer 可用于表单项进行扩展。
 
@@ -45,6 +50,18 @@ el-data-table、el-data-tree 等组件内部集成该组件，用于更加灵活
 如下图所示，两个图片上传、一个富文本编辑器，都是借助 el-form-renderer 渲染的。
 
 ![example.png](https://cdn.nlark.com/yuque/0/2019/png/160590/1562641394165-dc22af20-2863-443f-8f1a-17cd12b1f359.png#align=left&display=inline&height=1488&name=example.png&originHeight=1488&originWidth=2646&size=145427&status=done&width=2646)
+
+## 表单验证
+
+vee-validate
+
+### 验证器拓展
+
+## 自动计算
+
+## 远程选项
+
+## 动态字段
 
 ## Feature
 
@@ -66,6 +83,7 @@ module -> Widget 插拔模式
 - 集成设计器
 - 轻量化
 - 插拔化
+- i18n
 
 **[⬆ Back to Top](#table-of-contents)**
 
