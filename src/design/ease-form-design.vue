@@ -49,6 +49,11 @@
         </div>
       </div>
     </main>
+    <language-selector
+      :value="dictionary"
+      ref="languageSelector"
+      @on-change="changeLanguage"
+    ></language-selector>
   </div>
 </template>
 <script lang="ts">
@@ -56,13 +61,16 @@ import FormItemSelector from './components/form-item-selector.vue'
 import FieldSetting from '././components/field-setting.vue'
 import FormViewer from './components/form-viewer'
 import codeEditor from './components/code-editor'
+import languageSelector from './components/language-selector.vue'
 import {Field} from '../../types/field'
+import fieldSettingVue from '././components/field-setting.vue'
 export default {
   components: {
     FormItemSelector,
     FormViewer,
     codeEditor,
-    FieldSetting
+    FieldSetting,
+    languageSelector
   },
   data() {
     return {
@@ -83,6 +91,22 @@ export default {
     },
     activeKey() {
       return this.currentFieldConfig && this.currentFieldConfig.id
+    },
+    languageSelector() {
+      return this.$refs.languageSelector
+    },
+    currentFieldKey() {
+      return this.config.map((fieldConfig: Field) => fieldConfig.field)
+    }
+  },
+  watch: {
+    currentFieldKey() {
+      console.log('update', Object.keys(this.dictionary))
+      this.changeLanguage(Object.keys(this.dictionary))
+      const dictionary = this.dictionary
+      for (let language in dictionary) {
+        this.updateDictionaryField(language)
+      }
     }
   },
   methods: {
@@ -93,7 +117,34 @@ export default {
     clearCurrentField() {
       this.currentFieldIndex = -1
     },
-    addLanguage() {}
+    addLanguage() {
+      this.languageSelector.show()
+    },
+    changeLanguage(list) {
+      const dictionary = this.dictionary
+      list.forEach(language => {
+        if (!(language in dictionary)) {
+          this.updateDictionaryField(language)
+        }
+      })
+      for (let i in dictionary) {
+        if (!list.includes(i)) {
+          delete dictionary[i]
+        }
+      }
+      this.dictionary = {...dictionary}
+      console.log('dictionary', dictionary)
+    },
+    updateDictionaryField(language) {
+      const dictionary = this.dictionary
+      const template = this.config.reduce((map: obj, fieldConfig: Field) => {
+        map[fieldConfig.field] = ''
+        return map
+      }, {})
+      dictionary[language] = {
+        attributes: template
+      }
+    }
   }
 }
 </script>
