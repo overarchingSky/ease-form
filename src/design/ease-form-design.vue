@@ -23,33 +23,31 @@
         @select-field="setSettingPanelType"
         @clear-select-field="clearCurrentField"
       ></form-viewer>
-      <el-tabs
-        class="ease-design-layout__code"
-        v-model="activeCode"
-        type="border-card"
-      >
-        <!-- <el-tab-pane label="html" name="html">
-          <code-editor
-            class="ease-design-layout__code--html"
-            :active-key="activeKey"
-            v-model="html"
-          ></code-editor>
-        </el-tab-pane> -->
-        <el-tab-pane label="js" name="js">
-          <code-editor
-            class="ease-design-layout__code--js"
-            :active-key="activeKey"
-            v-model="config"
-          ></code-editor>
-        </el-tab-pane>
-        <el-tab-pane label="i18n" name="i18n">
-          <code-editor
-            class="ease-design-layout__code--i18n"
-            :active-key="activeKey"
-            v-model="config"
-          ></code-editor>
-        </el-tab-pane>
-      </el-tabs>
+      <div class="ease-design-layout__code__warp ease-form-col">
+        <el-tabs
+          class="ease-design-layout__code"
+          v-model="activeCode"
+          type="border-card"
+        >
+          <el-tab-pane label="js" name="js">
+            <code-editor
+              class="ease-design-layout__code--js"
+              :active-key="activeKey"
+              v-model="config"
+            ></code-editor>
+          </el-tab-pane>
+          <el-tab-pane label="i18n" name="i18n">
+            <code-editor
+              class="ease-design-layout__code--i18n"
+              :active-key="activeKey"
+              v-model="dictionary"
+            ></code-editor>
+          </el-tab-pane>
+        </el-tabs>
+        <div>
+          <el-button @click="addLanguage">+</el-button>
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -69,6 +67,7 @@ export default {
   data() {
     return {
       config: [],
+      dictionary: {},
       html: `<ease-form v-model="formValue" :config="config" :dictionary="dictionary"></ease-form>`,
       currentFieldIndex: -1,
       activeSetting: 'types',
@@ -93,7 +92,8 @@ export default {
     },
     clearCurrentField() {
       this.currentFieldIndex = -1
-    }
+    },
+    addLanguage() {}
   }
 }
 </script>
@@ -122,10 +122,17 @@ export default {
       border-right: 1px solid #dcdfe6;
     }
 
+    &__code__warp {
+      border-top: 1px solid #dcdfe6;
+      border-bottom: 1px solid #dcdfe6;
+      border-right: 1px solid #dcdfe6;
+    }
+
     &__code {
       width: 410px;
       display: flex;
       flex-direction: column;
+      flex: 1;
 
       .el-tabs__content {
         flex: 1;
