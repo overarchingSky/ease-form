@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VeeValidate from 'vee-validate';
+import VeeValidate, { Validator } from 'vee-validate';
 
 Vue.use(VeeValidate,{
     classes: true,
@@ -13,4 +13,8 @@ export function initDictionary(){
           }
         }
     }
+}
+
+export function localize(language = 'en'){
+    Validator.localize(language)
 }

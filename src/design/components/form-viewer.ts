@@ -1,3 +1,4 @@
+import { instanceApi } from './../../core/api';
 import { init, setVM } from '../../core/instence';
 import { Field } from '../../../types/field';
 import { CreateElement } from 'vue';
@@ -9,6 +10,9 @@ export default {
     props:{
         value:{
             type:Array
+        },
+        dictionary:{
+            type:Object
         }
     },
     computed:{
@@ -73,14 +77,17 @@ export default {
     created(){
         setVM(this)
         this.updateInnerConfig()
+        console.log('this',this)
     },
     data(){
         return {
             currentActiveFeild:{},
-            resolvedConfig:[]
+            resolvedConfig:[],
+            formValue:{}
         }
     },
     methods:{
+        ...instanceApi,
         updateInnerConfig(){
             const res = init(this.config,this.value)
             this.resolvedConfig = res

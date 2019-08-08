@@ -1,3 +1,4 @@
+import { instanceApi } from './../core/api';
 import Vue from 'vue'
 import {  VNode } from 'vue/types/vnode';
 import { CreateElement } from "vue";
@@ -16,6 +17,12 @@ export default Vue.extend({
             default(){
                 return {}
             }
+        },
+        language:{
+            type:String
+        },
+        dictionary:{
+            type:Object
         }
     },
     data(){
@@ -51,6 +58,6 @@ export default Vue.extend({
         this._config = init(this.config,this.value)
     },
     methods:{
-
+        ...instanceApi
     }
 })

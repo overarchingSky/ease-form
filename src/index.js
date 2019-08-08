@@ -1,5 +1,6 @@
 // Import vue component
 import Form from './template/ease-form'
+import {staticApi} from './core/api'
 //import { Vue } from 'vue/types/vue'
 // install function executed by Vue.use()
 
@@ -10,8 +11,9 @@ export function install(Vue) {
 }
 
 // Create module definition for Vue.use()
-const plugin = {
-  install
+export const plugin = {
+  install,
+  ...staticApi
 }
 
 // To auto-install when vue is found
