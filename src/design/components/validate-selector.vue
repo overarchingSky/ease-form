@@ -1,35 +1,45 @@
 <template>
-  <div class="language-selector">
+  <div class="ease-design-validate-selector">
     <el-drawer
-      title="我嵌套了 Form !"
+      title="定制rules"
       :before-close="handleClose"
       :visible.sync="dialog"
       direction="rtl"
-      custom-class="demo-drawer"
+      custom-class="ease-design-validate-selector"
       ref="drawer"
     >
       <div class="drawer__content">
         <el-container>
           <el-main>
+            <div class="search">
+              <el-input
+                v-model="rule"
+                @keydown.native.enter="addRule(rule)"
+                placeholder="press enter，add rule"
+                clearable
+              >
+                <i class="el-icon-search el-input__icon" slot="suffix"> </i>
+              </el-input>
+            </div>
             <el-header>place picker</el-header>
             <div class="scroller">
               <el-tag
-                v-for="(language, index) in languages"
-                :key="language"
-                @click.native="selectLanguage(index, language)"
-                >{{ language }}</el-tag
+                v-for="(rule, index) in currrentRules"
+                :key="rule"
+                @click.native="selectRule(rule, index)"
+                >{{ rule }}</el-tag
               >
             </div>
           </el-main>
           <el-footer style="height:30vh;">
-            <el-header>selected languages</el-header>
+            <el-header>selected rule</el-header>
             <div class="scroller">
               <el-tag
-                v-for="(language, index) in currentLanguage"
-                :key="language"
-                @close="removeLanguage(index, language)"
+                v-for="(rule, index) in selectedRules"
+                :key="rule"
+                @close="removeRule(index, rule)"
                 closable
-                >{{ language }}</el-tag
+                >{{ rule }}</el-tag
               >
             </div>
           </el-footer>
@@ -47,39 +57,49 @@
 </template>
 
 <script lang="ts">
+import {rules} from '../../core/validate'
 export default {
-  name: 'language-selector',
+  name: 'ease-design-validate-selector',
   props: {
     value: {
-      type: Object
+      type: Array
     }
   },
   data() {
     return {
       dialog: false,
-      currentLanguage: [],
-      languages: 'abcdefghijklmnopqrstuvwxyz'.split('')
+      rule: '',
+      rules,
+      selectedRules: this.value
+    }
+  },
+  computed: {
+    currrentRules() {
+      console.log('this.rules', this.rules)
+      return this.rules.filter(r => new RegExp(this.rule).test(r))
     }
   },
   watch: {
     value() {
-      this.currentLanguage = Object.keys(this.value)
+      this.selectedRules = this.value
     }
   },
   methods: {
     handleClose(done) {
-      this.$confirm('确定更改？').then(_ => {
-        this.$emit('on-change', this.currentLanguage)
-        done()
-      })
+      this.$emit('input', this.selectedRules)
+      done()
     },
-    selectLanguage(index, language) {
-      this.currentLanguage.push(language)
-      this.languages.splice(index, 1)
+    selectRule(rule, index) {
+      this.selectedRules.push(rule)
+      this.rules.splice(index, 1)
     },
-    removeLanguage(index, language) {
-      this.currentLanguage.splice(index, 1)
-      this.languages.unshift(language)
+    addRule(rule) {
+      this.selectedRules.push(rule)
+      this.rule = ''
+    },
+    removeRule(index, rule) {
+      this.selectedRules.splice(index, 1)
+      this.rules.unshift(rule)
     },
     show() {
       this.dialog = true
@@ -92,6 +112,13 @@ export default {
 </script>
 
 <style lang="less">
+.ease-design-validate-selector {
+  .search {
+    box-sizing: border-box;
+    padding: 10px;
+  }
+}
+
 .el-drawer {
   user-select: none;
 }

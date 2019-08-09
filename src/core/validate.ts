@@ -18,3 +18,5 @@ export function initDictionary(){
 export function localize(language = 'en'){
     Validator.localize(language)
 }
+
+export const rules = Object.keys(Validator.rules)

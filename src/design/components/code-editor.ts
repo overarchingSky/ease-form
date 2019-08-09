@@ -36,15 +36,14 @@ export default {
         }
     },
     watch:{
-        activeKey(val){
-            this.$nextTick(_ => {
-                if(val){
-                    this.rowInfo = this.scrollFeild(this.activeKey)
-                }
-                let {startIndex,endIndex} = this.rowInfo
-                this.codemirror.setSelection ({line:startIndex,ch:3},{line:endIndex,ch:1})
-                this.codemirror.scrollIntoView({line:startIndex,ch:3})
-            })
+        activeKey:{
+            handler(val){
+                this.location()
+            },
+            immediate:true
+        },
+        value(){
+            this.location()
         }
     },
     render(h:CreateElement){
@@ -105,6 +104,16 @@ export default {
         updateConfig(code:any){
             console.log(code)
             this.$emit('input',parseObj(code))
+        },
+        location(){
+            this.$nextTick(_ => {
+                if(this.activeKey){
+                    this.rowInfo = this.scrollFeild(this.activeKey)
+                    let {startIndex,endIndex} = this.rowInfo
+                    this.codemirror.setSelection ({line:startIndex,ch:3},{line:endIndex,ch:1})
+                    this.codemirror.scrollIntoView({line:startIndex,ch:3})
+                }
+            })
         }
     }
 }

@@ -31,6 +31,7 @@
         >
           <el-tab-pane label="js" name="js">
             <code-editor
+              ref="js"
               class="ease-design-layout__code--js"
               :active-key="activeKey"
               v-model="config"
@@ -38,8 +39,8 @@
           </el-tab-pane>
           <el-tab-pane label="i18n" name="i18n">
             <code-editor
+              ref="i18n"
               class="ease-design-layout__code--i18n"
-              :active-key="activeKey"
               v-model="dictionary"
             ></code-editor>
           </el-tab-pane>
@@ -95,6 +96,7 @@ export default {
     languageSelector() {
       return this.$refs.languageSelector
     },
+
     currentFieldKey() {
       return this.config.map((fieldConfig: Field) => fieldConfig.field)
     }
@@ -107,6 +109,9 @@ export default {
       for (let language in dictionary) {
         this.updateDictionaryField(language)
       }
+    },
+    activeCode() {
+      this.$refs[this.activeCode] && this.$refs[this.activeCode].$forceUpdate()
     }
   },
   methods: {
