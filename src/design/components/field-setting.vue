@@ -18,34 +18,10 @@
     <div @click="showRulesPicker">
       <div class="validator ease-form-row el-collapse-item__header">
         Validator
-        <el-tooltip
-          effect="light"
-          content="https://baianat.github.io/vee-validate/guide/rules.html#after"
-          placement="top"
-        >
-          <a
-            class="ease-form-link"
-            @click.stop
-            href="https://baianat.github.io/vee-validate/guide/rules.html#after"
-            target="_blank"
-          >
-            <svg
-              class="ease-form-tip"
-              t="1565337512116"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1134"
-              width="20"
-              height="20"
-            >
-              <path
-                d="M512 77C271.8 77 77 271.8 77 512c0 240.2 194.8 435 435 435 240.2 0 435-194.8 435-435C947 271.8 752.2 77 512 77L512 77zM509.2 816.4c-35.4 0-64.2-28.2-64.2-62.9s28.7-62.9 64.2-62.9c35.4 0 64.2 28.2 64.2 62.9S544.7 816.4 509.2 816.4L509.2 816.4zM681.6 460.5c-12.6 19.8-39.3 46.7-80.3 80.8-21.2 17.6-34.4 31.8-39.5 42.6-5.1 10.7-7.5 29.9-7 57.6l-91.4 0c-0.2-13.1-0.4-21.1-0.4-24 0-29.6 4.9-53.9 14.7-73 9.8-19.1 29.4-40.6 58.7-64.4 29.3-23.9 46.9-39.5 52.6-46.9 8.8-11.7 13.3-24.6 13.3-38.6 0-19.5-7.9-36.2-23.5-50.2-15.6-13.9-36.8-20.9-63.3-20.9-25.6 0-47 7.3-64.2 21.8-17.2 14.5-32 46.5-35.5 66.3-3.3 18.7-93.4 26.6-92.3-11.3 1.1-37.9 20.8-79 54.6-108.8 33.8-29.8 78.2-44.7 133.1-44.7 57.8 0 103.7 15.1 137.9 45.3 34.2 30.2 51.2 65.3 51.2 105.4C700.4 419.7 694.1 440.7 681.6 460.5L681.6 460.5z"
-                p-id="1135"
-              ></path>
-            </svg>
-          </a>
-        </el-tooltip>
+        <Tip
+          to="https://baianat.github.io/vee-validate/guide/rules.html#after"
+        ></Tip>
+        <i class="el-collapse-item__arrow el-icon-arrow-right"></i>
       </div>
       <div>
         <el-tag v-for="rule in value.validate.rules" :key="rule">{{
@@ -63,48 +39,6 @@
         >
           <el-input v-model="value[text]" clearable></el-input>
         </el-form-item>
-      </el-collapse-item>
-      <el-collapse-item
-        title="Validator:"
-        name="Validator"
-        @click.native="showRulesPicker"
-      >
-        <div slot="title" class="ease-form-row">
-          Validator:
-          <el-tooltip
-            effect="light"
-            content="https://baianat.github.io/vee-validate/guide/rules.html#after"
-            placement="top"
-          >
-            <a
-              class="ease-form-link"
-              @click.stop
-              href="https://baianat.github.io/vee-validate/guide/rules.html#after"
-              target="_blank"
-            >
-              <svg
-                class="ease-form-tip"
-                t="1565337512116"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="1134"
-                width="20"
-                height="20"
-              >
-                <path
-                  d="M512 77C271.8 77 77 271.8 77 512c0 240.2 194.8 435 435 435 240.2 0 435-194.8 435-435C947 271.8 752.2 77 512 77L512 77zM509.2 816.4c-35.4 0-64.2-28.2-64.2-62.9s28.7-62.9 64.2-62.9c35.4 0 64.2 28.2 64.2 62.9S544.7 816.4 509.2 816.4L509.2 816.4zM681.6 460.5c-12.6 19.8-39.3 46.7-80.3 80.8-21.2 17.6-34.4 31.8-39.5 42.6-5.1 10.7-7.5 29.9-7 57.6l-91.4 0c-0.2-13.1-0.4-21.1-0.4-24 0-29.6 4.9-53.9 14.7-73 9.8-19.1 29.4-40.6 58.7-64.4 29.3-23.9 46.9-39.5 52.6-46.9 8.8-11.7 13.3-24.6 13.3-38.6 0-19.5-7.9-36.2-23.5-50.2-15.6-13.9-36.8-20.9-63.3-20.9-25.6 0-47 7.3-64.2 21.8-17.2 14.5-32 46.5-35.5 66.3-3.3 18.7-93.4 26.6-92.3-11.3 1.1-37.9 20.8-79 54.6-108.8 33.8-29.8 78.2-44.7 133.1-44.7 57.8 0 103.7 15.1 137.9 45.3 34.2 30.2 51.2 65.3 51.2 105.4C700.4 419.7 694.1 440.7 681.6 460.5L681.6 460.5z"
-                  p-id="1135"
-                ></path>
-              </svg>
-            </a>
-          </el-tooltip>
-        </div>
-        <div>
-          <el-tag v-for="rule in value.validate.rules" :key="rule">{{
-            rule
-          }}</el-tag>
-        </div>
       </el-collapse-item>
       <el-collapse-item title="Slots:" name="Slots">
         <el-form-item
@@ -126,7 +60,7 @@
       </el-collapse-item>
     </el-collapse>
     <validate-selector
-      v-model="value.validate.rules"
+      v-model="value.validate"
       ref="rulePicker"
     ></validate-selector>
   </el-form>
@@ -137,7 +71,7 @@ import scheduler from '../../core/scheduler'
 import {CompOptions} from '../../../types/comp-options'
 import {formateSelectorOptions} from '../../utils'
 import validateSelector from './validate-selector.vue'
-
+import Tip from './base/Tip.vue'
 export default {
   props: {
     value: {
@@ -148,7 +82,8 @@ export default {
     }
   },
   components: {
-    validateSelector
+    validateSelector,
+    Tip
   },
   computed: {
     slotNames() {
@@ -217,7 +152,7 @@ export default {
     transition: fill 0.3s ease;
 
     &:hover {
-      fill: #eaeef1;
+      fill: #409eff;
     }
   }
 

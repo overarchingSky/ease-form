@@ -35,8 +35,13 @@ export function generateFieldConfig(type:string){
             rules:[],
             trigger:{
                 events:'',
+                // modifiers
                 options:{
-                    
+                    continues:false,
+                    persist:false,            
+                    bails:false,          
+                    disable:true,     
+                    immediate:false
                 }
             }
         }

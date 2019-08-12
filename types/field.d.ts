@@ -29,6 +29,8 @@ declare class Field {
                 continues?:boolean;
                 // 当字段被销毁时（destoryed），是否将状态保留到内存中，以便仍能对其进行校验
                 persist?:boolean;
+                // ??
+                bails?:boolean;
                 // 是否禁用自动校验功能？
                 disable?:boolean;
                 // 是否在渲染成功后立即校验一次，某些场景如：编辑表单时，可以立即做一次校验

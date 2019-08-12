@@ -10,28 +10,26 @@
     >
       <div class="drawer__content">
         <el-container>
-          <el-main>
-            <div class="search">
-              <el-input
-                v-model="rule"
-                @keydown.native.enter="addRule(rule)"
-                placeholder="press enter，add rule"
-                clearable
-              >
-                <i class="el-icon-search el-input__icon" slot="suffix"> </i>
-              </el-input>
-            </div>
-            <el-header>place picker</el-header>
-            <div class="scroller">
-              <el-tag
-                v-for="(rule, index) in currrentRules"
-                :key="rule"
-                @click.native="selectRule(rule, index)"
-                >{{ rule }}</el-tag
-              >
-            </div>
-          </el-main>
-          <el-footer style="height:30vh;">
+          <div class="search">
+            <el-input
+              v-model="rule"
+              @keydown.native.enter="addRule(rule)"
+              placeholder="press enter，add rule"
+              clearable
+            >
+              <i class="el-icon-search el-input__icon" slot="suffix"> </i>
+            </el-input>
+          </div>
+          <el-header>place picker</el-header>
+          <div class="rule-picker scroller">
+            <el-tag
+              v-for="(rule, index) in currrentRules"
+              :key="rule"
+              @click.native="selectRule(rule, index)"
+              >{{ rule }}</el-tag
+            >
+          </div>
+          <div class="ease-design-validate__section" style="height:150px;">
             <el-header>selected rule</el-header>
             <div class="scroller">
               <el-tag
@@ -42,9 +40,33 @@
                 >{{ rule }}</el-tag
               >
             </div>
-          </el-footer>
+          </div>
+          <div class="ease-design-validate__section" style="height:260px;">
+            <el-header>options</el-header>
+            <div>
+              <div class="ease-form-row">
+                <label class="ease-form-row__label" for="">自动校验</label>
+                <el-switch v-model="autoValidate"></el-switch>
+              </div>
+              <div class="ease-form-row">
+                <label class="ease-form-row__label" for="">
+                  过程参数
+                  <Tip to="haha"></Tip>
+                </label>
+                <el-checkbox-group
+                  class="ease-design-validate__modifiers"
+                  v-model="modifiers"
+                >
+                  <el-checkbox label="continues">continues</el-checkbox>
+                  <el-checkbox label="persist">persist</el-checkbox>
+                  <el-checkbox label="bails">bails</el-checkbox>
+                  <el-checkbox label="immediate">immediate</el-checkbox>
+                </el-checkbox-group>
+              </div>
+              <div class="ease-form-row"></div>
+            </div>
+          </div>
         </el-container>
-
         <div class="drawer__footer">
           <el-button @click="dialog = false">取 消</el-button>
           <el-button type="primary" @click="$refs.drawer.closeDrawer()"
@@ -58,19 +80,27 @@
 
 <script lang="ts">
 import {rules} from '../../core/validate'
+import Tip from './base/Tip.vue'
 export default {
   name: 'ease-design-validate-selector',
   props: {
     value: {
-      type: Array
+      type: Object
     }
+  },
+  components: {
+    Tip
   },
   data() {
     return {
       dialog: false,
       rule: '',
       rules,
-      selectedRules: this.value
+      selectedRules: this.value.rules,
+      event: this.value.trigger.event,
+      options: this.value.trigger.options,
+      autoValidate: false,
+      modifiers: []
     }
   },
   computed: {
@@ -80,13 +110,28 @@ export default {
     }
   },
   watch: {
+    modifiers(val) {
+      for (let key in this.options) {
+        if (key === 'disable') continue
+        if (val.includes(key)) {
+          this.options[key] = true
+        } else {
+          this.options[key] = false
+        }
+      }
+    },
+    autoValidate(val) {
+      this.options.disable = !val
+    },
     value() {
-      this.selectedRules = this.value
+      this.selectedRules = this.value.rules
+      this.event = this.value.trigger.event
+      this.options = this.value.trigger.options
     }
   },
   methods: {
     handleClose(done) {
-      this.$emit('input', this.selectedRules)
+      this.$emit('input', this.value)
       done()
     },
     selectRule(rule, index) {
@@ -117,6 +162,18 @@ export default {
     box-sizing: border-box;
     padding: 10px;
   }
+
+  .ease-form-row {
+    margin: 14px;
+
+    &__label {
+      display: inline-block;
+      flex-shrink: 0;
+      width: 6em;
+      text-align: right;
+      padding-right: 10px;
+    }
+  }
 }
 
 .el-drawer {
@@ -129,16 +186,26 @@ export default {
 
 .el-container {
   height: calc(100% - 120px);
+  overflow: auto;
 }
 
-.el-main {
+.rule-picker {
+  min-height: 30vh;
+}
+
+.ease-design-validate__section {
   padding: 0;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 
   .scroller {
     flex: 1;
   }
+}
+
+.ease-design-validate__modifiers {
+  line-height: normal;
 }
 
 .el-header {
