@@ -29,4 +29,8 @@ export default {
   //functional:true
 }
 </script>
-<style lang="less"></style>
+<style lang="less">
+.ease-form-link {
+  font-size: 0;
+}
+</style>

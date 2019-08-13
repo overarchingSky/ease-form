@@ -169,6 +169,13 @@ export default {
       height: 100%;
       min-height: 60vh;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+
+      .el-tabs__content {
+        flex: 1;
+        overflow-y: auto;
+      }
     }
 
     &__content {
@@ -189,6 +196,7 @@ export default {
       display: flex;
       flex-direction: column;
       flex: 1;
+      overflow: auto;
 
       .el-tabs__content {
         flex: 1;

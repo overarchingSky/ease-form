@@ -3,6 +3,7 @@
     <el-drawer
       title="定制rules"
       :before-close="handleClose"
+      :destroy-on-close="true"
       :visible.sync="dialog"
       direction="rtl"
       custom-class="ease-design-validate-selector"
@@ -50,8 +51,10 @@
               </div>
               <div class="ease-form-row">
                 <label class="ease-form-row__label" for="">
-                  过程参数
-                  <Tip to="haha"></Tip>
+                  <span style="padding-right:6px;">过程参数</span>
+                  <Tip
+                    to="https://baianat.github.io/vee-validate/api/directive.html#directive-modifiers"
+                  ></Tip>
                 </label>
                 <el-checkbox-group
                   class="ease-design-validate__modifiers"
@@ -99,17 +102,20 @@ export default {
       selectedRules: this.value.rules,
       event: this.value.trigger.event,
       options: this.value.trigger.options,
-      autoValidate: false,
+      autoValidate: !this.value.trigger.options.disable,
       modifiers: []
     }
   },
   computed: {
     currrentRules() {
       console.log('this.rules', this.rules)
-      return this.rules.filter(r => new RegExp(this.rule).test(r))
+      return this.rules.filter(r => !this.selectedRules.includes(r))
     }
   },
   watch: {
+    dialog(val) {
+      val && this.reset()
+    },
     modifiers(val) {
       for (let key in this.options) {
         if (key === 'disable') continue
@@ -130,13 +136,23 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.rule = ''
+      this.modifiers = Object.keys(this.options).filter(key => {
+        if (key === 'disable') {
+          return false
+        }
+        return !!this.options[key]
+      })
+      this.autoValidate = !this.value.trigger.options.disable
+    },
     handleClose(done) {
       this.$emit('input', this.value)
       done()
     },
     selectRule(rule, index) {
       this.selectedRules.push(rule)
-      this.rules.splice(index, 1)
+      //this.rules.splice(index, 1)
     },
     addRule(rule) {
       this.selectedRules.push(rule)
@@ -144,7 +160,7 @@ export default {
     },
     removeRule(index, rule) {
       this.selectedRules.splice(index, 1)
-      this.rules.unshift(rule)
+      //this.rules.unshift(rule)
     },
     show() {
       this.dialog = true
@@ -167,10 +183,11 @@ export default {
     margin: 14px;
 
     &__label {
-      display: inline-block;
+      display: flex;
       flex-shrink: 0;
       width: 6em;
-      text-align: right;
+      justify-content: flex-start;
+      align-items: center;
       padding-right: 10px;
     }
   }
