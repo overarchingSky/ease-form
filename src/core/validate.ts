@@ -19,4 +19,18 @@ export function localize(language = 'en'){
     Validator.localize(language)
 }
 
+export const triggerEvents = [{
+  label:'input',
+  value:'input'
+},{
+  label:'change',
+  value:'change'
+},{
+  label:'blur',
+  value:'blur'
+},{
+  label:'focus',
+  value:'focus'
+}]
+
 export const rules = Object.keys(Validator.rules)

@@ -27,18 +27,18 @@ export default Vue.extend({
     },
     data(){
         return {
-            currentValue:this.value,
+            currentValue:this.value || {},
             _config:null
         }
     },
     watch:{
         value(val){
-            this.currentValue = val
+            this.currentValue = val || {}
         },
         config:{
             handler(){
                 console.log('shoule update ease-form')
-                this._config = init(this.config,this.formValue)
+                this._config = init(this.config,this.currentValue)
             },
             deep:true
         }

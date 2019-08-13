@@ -43,7 +43,8 @@ export default {
             immediate:true
         },
         value(){
-            this.location()
+            // 此处会导致编辑代码时，代码块被选中
+            //this.location()
         }
     },
     render(h:CreateElement){
@@ -73,7 +74,6 @@ export default {
     },
     methods:{
         scrollFeild(id){
-            console.log('id',id)
             let lineCount = this.codemirror.lineCount()
             let startIndex = -1
             let endIndex = -1
@@ -102,7 +102,6 @@ export default {
             }
         },
         updateConfig(code:any){
-            console.log(code)
             this.$emit('input',parseObj(code))
         },
         location(){

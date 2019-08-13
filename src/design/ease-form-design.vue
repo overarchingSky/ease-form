@@ -55,6 +55,7 @@
       ref="languageSelector"
       @on-change="changeLanguage"
     ></language-selector>
+    {{ errors }}
   </div>
 </template>
 <script lang="ts">
@@ -65,6 +66,7 @@ import codeEditor from './components/code-editor'
 import languageSelector from './components/language-selector.vue'
 import {Field} from '../../types/field'
 import fieldSettingVue from '././components/field-setting.vue'
+import {clone} from 'lodash-es'
 export default {
   components: {
     FormItemSelector,
@@ -77,7 +79,6 @@ export default {
     return {
       config: [],
       dictionary: {},
-      html: `<ease-form v-model="formValue" :config="config" :dictionary="dictionary"></ease-form>`,
       currentFieldIndex: -1,
       activeSetting: 'types',
       activeCode: 'js'

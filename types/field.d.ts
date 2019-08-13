@@ -18,11 +18,11 @@ declare class Field {
     };
     _formItem: CompOptions;
     validate: {
-        rules:{},
+        rules:[],
         // 触发事件
         trigger?:{
             // 触发验证的事件列表,被vee-validate一致，使用“|”做分割
-            events:string;
+            events:string[];
             // modifiers，refer：https://baianat.github.io/vee-validate/api/directive.html#directive-modifiers
             options:{
                 // 配置多个校验规则时，当前一个校验失败时，是否继续后续校验，并给出所有的错误信息？

@@ -83,13 +83,13 @@ export default {
         return {
             currentActiveFeild:{},
             resolvedConfig:[],
-            formValue:{}
+            currentValue:{}
         }
     },
     methods:{
         ...instanceApi,
         updateInnerConfig(){
-            const res = init(this.config,this.value)
+            const res = init(this.config,this.currentValue)
             this.resolvedConfig = res
         },
         updateConfig(e:any){

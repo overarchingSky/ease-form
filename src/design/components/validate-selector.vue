@@ -46,12 +46,12 @@
             <el-header>options</el-header>
             <div>
               <div class="ease-form-row">
-                <label class="ease-form-row__label" for="">自动校验</label>
+                <label class="ease-form-row__label" for="">auto-validate</label>
                 <el-switch v-model="autoValidate"></el-switch>
               </div>
               <div class="ease-form-row">
                 <label class="ease-form-row__label" for="">
-                  <span style="padding-right:6px;">过程参数</span>
+                  <span style="padding-right:6px;">modifiers</span>
                   <Tip
                     to="https://baianat.github.io/vee-validate/api/directive.html#directive-modifiers"
                   ></Tip>
@@ -66,7 +66,30 @@
                   <el-checkbox label="immediate">immediate</el-checkbox>
                 </el-checkbox-group>
               </div>
-              <div class="ease-form-row"></div>
+              <div class="ease-form-row">
+                <label class="ease-form-row__label" for="">
+                  <span style="padding-right:6px;">trigger events</span>
+                  <Tip
+                    to="https://baianat.github.io/vee-validate/guide/events.html#changing-default-events"
+                  ></Tip>
+                </label>
+                <el-select
+                  v-model="value.trigger.events"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  placeholder="type or select"
+                >
+                  <el-option
+                    v-for="item in events"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
             </div>
           </div>
         </el-container>
@@ -82,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import {rules} from '../../core/validate'
+import {rules, triggerEvents} from '../../core/validate'
 import Tip from './base/Tip.vue'
 export default {
   name: 'ease-design-validate-selector',
@@ -103,13 +126,15 @@ export default {
       event: this.value.trigger.event,
       options: this.value.trigger.options,
       autoValidate: !this.value.trigger.options.disable,
-      modifiers: []
+      modifiers: [],
+      events: triggerEvents
     }
   },
   computed: {
     currrentRules() {
-      console.log('this.rules', this.rules)
-      return this.rules.filter(r => !this.selectedRules.includes(r))
+      return this.rules.filter(
+        r => !this.selectedRules.includes(r) && new RegExp(this.rule).test(r)
+      )
     }
   },
   watch: {

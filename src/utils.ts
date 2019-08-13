@@ -1,4 +1,5 @@
 import { CompOptions } from './../types/comp-options.d';
+import { isUndefined } from 'util';
 /**
  * 是否是vue组件，区别于原生元素
  * @param arg 
@@ -34,7 +35,7 @@ export function generateFieldConfig(type:string){
         validate:{
             rules:[],
             trigger:{
-                events:'',
+                events:[],
                 // modifiers
                 options:{
                     continues:false,
@@ -109,4 +110,12 @@ export function parseObj(strObj){
     //     }
     // }
     // return obj;
+}
+
+export function isDefined(data){
+    return data !== undefined
+}
+
+export function isNaN(data){//利用NaN !== NaN的特性判定
+    return data !== data
 }

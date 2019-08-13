@@ -1,6 +1,6 @@
 <template>
   <div class="ease-form-error-default">
-    {{ text }}
+    {{ errors }}
   </div>
 </template>
 <script lang="ts">
@@ -11,6 +11,7 @@ export default {
       type: String
     }
   },
+
   components: {}
 }
 </script>
