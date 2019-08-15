@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {  VNode } from 'vue/types/vnode';
 import { CreateElement } from "vue";
 import { Field } from '../../types/field';
-import { setVM, init } from '../core/instence';
+import { formVm } from '../core/instence';
 console.log('Vue',Vue)
 export default Vue.extend({
     name: "ease-form",
@@ -38,7 +38,7 @@ export default Vue.extend({
         config:{
             handler(){
                 console.log('shoule update ease-form')
-                this._config = init(this.config,this.currentValue)
+                this._config = formVm.init(this.config,this.currentValue)
             },
             deep:true
         }
@@ -54,8 +54,8 @@ export default Vue.extend({
         })])
     },
     created(){
-        setVM(this)
-        this._config = init(this.config,this.value)
+        formVm.form = this
+        this._config = formVm.init(this.config,this.value)
     },
     methods:{
         ...instanceApi

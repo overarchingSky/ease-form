@@ -1,5 +1,5 @@
 import { instanceApi } from './../../core/api';
-import { init, setVM } from '../../core/instence';
+import { formVm } from '../../core/instence';
 import { Field } from '../../../types/field';
 import { CreateElement } from 'vue';
 import scheduler from '../../core/scheduler'
@@ -71,18 +71,21 @@ export default {
         })])
     },
     watch:{
-        currentValue:{
-            handler(){
-                this.updateInnerConfig()
-            },
-            deep:true
-        },
+        // currentValue:{
+        //     handler(){
+        //         // waiting for a moment, ensuring the vee-validate computed completed
+        //         this.$nextTick(_ => {
+        //             this.updateInnerConfig()
+        //         })
+        //     },
+        //     deep:true
+        // },
         config(){
             this.updateInnerConfig()
         }
     },
     created(){
-        setVM(this)
+        formVm.form = this
         this.updateInnerConfig()
         console.log('this',this)
     },
@@ -96,7 +99,7 @@ export default {
     methods:{
         ...instanceApi,
         updateInnerConfig(){
-            const res = init(this.config,this.currentValue)
+            const res = formVm.init(this.config,this.currentValue)
             this.resolvedConfig = res
         },
         updateConfig(e:any){

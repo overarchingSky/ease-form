@@ -1,6 +1,6 @@
 <template>
   <div class="ease-form-error-default">
-    {{ err }}
+    {{ text }}
   </div>
 </template>
 <script lang="ts">
@@ -9,11 +9,6 @@ export default {
   props: {
     text: {
       type: String
-    }
-  },
-  computed: {
-    err() {
-      return this.errors
     }
   },
   components: {}

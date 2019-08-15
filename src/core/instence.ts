@@ -8,29 +8,54 @@ import { schedulerFormItem } from '../../types/scheduler';
 import { ResolvedField } from '../../types/resolved-field';
 import './validate'
 import { isNaN } from 'lodash-es';
-let formVm:any;
-let h:CreateElement;
-export function setVM(vm:any){
-    formVm = vm
-    h = vm.$createElement
-    // @ts-ignore
+import { CombinedVueInstance } from 'vue/types/vue';
+
+class FormVm {
+    form:any = {}
+    items:obj = {}
+    // constructor(form){
+    //     this.form = form
+    // }
+    collect(key:string,formItemVm){
+        if(this.items[key]){
+            console.warn(`${key} has existed in formVm.items,and be Covered, place ensure safety`)
+        }
+        this.items[key] = formItemVm
+    }
+    getFieldInstance(fieldName:string){
+        // 继续这里
+        return this.items.find()
+    }
+    init(config:Field[],formValue:obj = {}) : ResolvedField[] {
+        config =JSON.parse(JSON.stringify(config))
+        return config.map((fieldConfig:Field):ResolvedField => {
+            const formItem: schedulerFormItem = scheduler.getFormItem(fieldConfig.formItem)
+            const slotsComponentConfig:string[] = formItem.slots
+            let transmit:VNodeData = fieldConfig.transmit || {}
+            transmit.scopedSlots = _init(formItem,fieldConfig,formValue)
+            let self = this
+            fieldConfig._formItem = {
+                extends:formItem.component,
+                created(){
+                    self.collect(`${fieldConfig.field}-${fieldConfig.id}`,this)
+                }
+            } as CompOptions
+            fieldConfig.transmit = transmit
+            fieldConfig._slots = transmit.scopedSlots
+            return fieldConfig as ResolvedField
+        });
+    }
+}
+
+export const formVm = new FormVm()
+const h:CreateElement = function(...args){
+    if(!formVm.form){
+        throw(`instence:formVm.form has not been initial,place assigne it with vue instance, like 'this'`)
+    }
+    return formVm.form && formVm.form.$createElement(...args)
+}
+// @ts-ignore
 window.formVm = formVm
-}
-
-
-export function init(config:Field[],formValue:obj = {}) : ResolvedField[] {
-    config =JSON.parse(JSON.stringify(config))
-    return config.map((fieldConfig:Field):ResolvedField => {
-        const formItem: schedulerFormItem = scheduler.getFormItem(fieldConfig.formItem)
-        const slotsComponentConfig:string[] = formItem.slots
-        let transmit:VNodeData = fieldConfig.transmit || {}
-        transmit.scopedSlots = _init(formItem,fieldConfig,formValue)
-        fieldConfig._formItem = formItem.component
-        fieldConfig.transmit = transmit
-        fieldConfig._slots = transmit.scopedSlots
-        return fieldConfig as ResolvedField
-    });
-}
 
 function _init(formItem:schedulerFormItem,FieldConfig:Field,formValue:obj){
     let formItemSlots = formItem.slots
@@ -73,7 +98,11 @@ function initInput(FieldConfig:Field,formValue:obj){
         },
         on:{
             input:(value:any) => {
-                formVm.$set(formValue,FieldConfig.field,value)
+                formVm.form.$set(formValue,FieldConfig.field,value)
+                setTimeout(() => {
+                    //formVm.$forceUpdate()
+                }, 0);
+                
             }
         },
         directives:[{
@@ -88,9 +117,14 @@ function initInput(FieldConfig:Field,formValue:obj){
 }
 
 function initSlot(slotName:string,FieldConfig:Field){
+    let text = FieldConfig[slotName]
+    if(slotName === 'error'){
+        text = formVm.form.errors.first(FieldConfig.field)
+    }
     let opt:VNodeData = {
+
         props:{
-            text: FieldConfig[slotName]
+            text
         }
     }
     return opt

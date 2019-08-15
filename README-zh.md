@@ -13,8 +13,8 @@
 
 - [el-form-renderer](#el-form-renderer)
   - [Introduction](#Introduction)
-    - [拓展 form-item](#%E6%8B%93%E5%B1%95form-item)
-    - [拓展 slot](#%E6%8B%93%E5%B1%95slot)
+    - [拓展 form-item](#%E6%8B%93%E5%B1%95-form-item)
+    - [拓展 slot](#%E6%8B%93%E5%B1%95-slot)
   - [表单验证](#%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81)
     - [验证器拓展](#%E9%AA%8C%E8%AF%81%E5%99%A8%E6%8B%93%E5%B1%95)
   - [自动计算](#%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97)
@@ -74,6 +74,7 @@ module -> Widget 插拔模式
 - 灵活的错误消息提示
 - 支持灵活的字段注解
 - 集成 vee-validate 表单验证
+- 远程校验
 - 自定义表单验证触发时机
 - 数据联动
 - 自动计算
