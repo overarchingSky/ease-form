@@ -49,24 +49,7 @@
                 <label class="ease-form-row__label" for="">auto-validate</label>
                 <el-switch v-model="autoValidate"></el-switch>
               </div>
-              <div class="ease-form-row">
-                <label class="ease-form-row__label" for="">
-                  <span style="padding-right:6px;">modifiers</span>
-                  <Tip
-                    to="https://baianat.github.io/vee-validate/api/directive.html#directive-modifiers"
-                  ></Tip>
-                </label>
-                <el-checkbox-group
-                  class="ease-design-validate__modifiers"
-                  v-model="modifiers"
-                >
-                  <el-checkbox label="continues">continues</el-checkbox>
-                  <el-checkbox label="persist">persist</el-checkbox>
-                  <el-checkbox label="bails">bails</el-checkbox>
-                  <el-checkbox label="immediate">immediate</el-checkbox>
-                </el-checkbox-group>
-              </div>
-              <div class="ease-form-row">
+              <div class="ease-form-row" v-if="autoValidate">
                 <label class="ease-form-row__label" for="">
                   <span style="padding-right:6px;">trigger events</span>
                   <Tip
@@ -89,6 +72,23 @@
                   >
                   </el-option>
                 </el-select>
+              </div>
+              <div class="ease-form-row">
+                <label class="ease-form-row__label" for="">
+                  <span style="padding-right:6px;">modifiers</span>
+                  <Tip
+                    to="https://baianat.github.io/vee-validate/api/directive.html#directive-modifiers"
+                  ></Tip>
+                </label>
+                <el-checkbox-group
+                  class="ease-design-validate__modifiers"
+                  v-model="modifiers"
+                >
+                  <el-checkbox label="continues">continues</el-checkbox>
+                  <el-checkbox label="persist">persist</el-checkbox>
+                  <el-checkbox label="bails">bails</el-checkbox>
+                  <el-checkbox label="immediate">immediate</el-checkbox>
+                </el-checkbox-group>
               </div>
             </div>
           </div>
@@ -123,7 +123,6 @@ export default {
       rule: '',
       rules,
       selectedRules: this.value.rules,
-      event: this.value.trigger.event,
       options: this.value.trigger.options,
       autoValidate: !this.value.trigger.options.disable,
       modifiers: [],
@@ -153,10 +152,12 @@ export default {
     },
     autoValidate(val) {
       this.options.disable = !val
+      if (!val) {
+        this.value.trigger.events = []
+      }
     },
     value() {
       this.selectedRules = this.value.rules
-      this.event = this.value.trigger.event
       this.options = this.value.trigger.options
     }
   },

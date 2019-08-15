@@ -25,12 +25,6 @@ export const triggerEvents = [{
 },{
   label:'change',
   value:'change'
-},{
-  label:'blur',
-  value:'blur'
-},{
-  label:'focus',
-  value:'focus'
 }]
 
 export const rules = Object.keys(Validator.rules)

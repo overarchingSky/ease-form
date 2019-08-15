@@ -55,7 +55,6 @@
       ref="languageSelector"
       @on-change="changeLanguage"
     ></language-selector>
-    {{ errors }}
   </div>
 </template>
 <script lang="ts">

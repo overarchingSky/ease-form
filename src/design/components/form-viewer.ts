@@ -54,7 +54,8 @@ export default {
                         cursor:'grab',
                         flex:1
                     },
-                    key:Field.id,
+                    // when Field.validate change, we hope to create a new form-item instance,because of the directives v-validate won't update
+                    key:JSON.stringify(Field.validate),
                     scopedSlots:Field.transmit.scopedSlots,
                     nativeOn:{
                         click:_ => this.clickHandler(index,Field)
@@ -70,6 +71,12 @@ export default {
         })])
     },
     watch:{
+        currentValue:{
+            handler(){
+                this.updateInnerConfig()
+            },
+            deep:true
+        },
         config(){
             this.updateInnerConfig()
         }

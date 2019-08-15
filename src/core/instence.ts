@@ -28,7 +28,6 @@ export function init(config:Field[],formValue:obj = {}) : ResolvedField[] {
         fieldConfig._formItem = formItem.component
         fieldConfig.transmit = transmit
         fieldConfig._slots = transmit.scopedSlots
-        
         return fieldConfig as ResolvedField
     });
 }
@@ -62,42 +61,29 @@ function resoveSlots(formItemSlots:string[],FieldConfig:Field,formValue:obj){
 // }
 
 function initInput(FieldConfig:Field,formValue:obj){
-    const slotComponentConfig = FieldConfig.slots
     const validate = FieldConfig.validate
-    console.log('vm',formVm)
     let opt:VNodeData = {
         attrs:{
             name:FieldConfig.field,
             'data-vv-validate-on':validate.trigger.events.join('|'),
-        },
-        props:{
-            'data-vv-validate-on':validate.trigger.events.join('|'),
-            value: formValue[FieldConfig.field],
             placeholder:FieldConfig.placeholder
         },
-        nativeOn:{
-            input:(e:any) => {
-                let value = e.target.value
-                if(!isNaN(e.target.valueAsNumber)){
-                    value = Number(value)
-                }
-                formValue[FieldConfig.field] = value
-                //formVm.$emit('input',{...formValue})
+        props:{
+            value: formValue[FieldConfig.field],
+        },
+        on:{
+            input:(value:any) => {
+                formVm.$set(formValue,FieldConfig.field,value)
             }
         },
         directives:[{
             name: 'validate',
             value: validate.rules.join("|"),
             //expression: `"${validate.rules.join("|")}"`,
-            //arg: FieldConfig.field,
+            //arg: 'value',
             modifiers: validate.trigger.options
           }]
     }
-    // validate.trigger.events.forEach(event => {
-    //     opt.nativeOn[event] = function(e){
-    //         formVm.$validator.validate()
-    //     }
-    // })
     return opt
 }
 

@@ -1,9 +1,5 @@
 enum trigger {
-    click,
-    focus,
-    blur,
-    touchStart,
-    touchEnd,
+    input,
     change
 }
 
