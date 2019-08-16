@@ -5,7 +5,7 @@ export default {
     name:'ease-form-input-number',
     props:{
         value:{
-            type:Number
+            type:[Number,String]
         }
     },
     alias:'number',

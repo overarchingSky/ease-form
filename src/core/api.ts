@@ -1,3 +1,4 @@
+import { formVm } from './instence';
 import { CompOptions } from './../../types/comp-options.d';
 import i18n from './i18n'
 import { schedulerSlots, schedulerFormItem, schedulerInput } from '../../types/scheduler';
@@ -8,16 +9,14 @@ export const staticApi = {
     extend:extend,
     extends:multipleExtend
 }
+
+const { getInstance,getFieldInstance } = formVm
+
 export const instanceApi = {
     localize:i18n.localize,
+    getInstance,
+    getFieldInstance
 }
-
-function pickCard(x: {suit: string; card: number; }[]): number;
-function pickCard(x: number): {suit: string; card: number; };
-function pickCard(x): any {
-    
-}
-
 
 function extend(arg:schedulerInput):void;
 // extend form-item or input type

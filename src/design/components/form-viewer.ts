@@ -1,27 +1,16 @@
-import { instanceApi } from './../../core/api';
-import { formVm } from '../../core/instence';
+import { formVm } from './../../core/instence';
+
 import { Field } from '../../../types/field';
 import { CreateElement } from 'vue';
 import scheduler from '../../core/scheduler'
 import { generateFieldConfig } from '../../utils';
-import { ResolvedField } from '../../../types/resolved-field';
+import mixins from '../../core/mixins'
 export default {
     name:'form-viewer',
-    props:{
-        value:{
-            type:Array
-        },
-        dictionary:{
-            type:Object
-        }
-    },
-    computed:{
-        config(){
-            return JSON.parse(JSON.stringify(this.value))
-        },
-    },
-    components:{
-        
+    mixins:[mixins],
+    model:{
+        prop:'config',
+        event:'input'
     },
     render(h:CreateElement){
         return h('dragable',{
@@ -40,7 +29,7 @@ export default {
             on:{
                 add:this.updateConfig
             }
-        }, [this.resolvedConfig.map((Field:Field,index:number) => {
+        }, [formVm.config.map((Field:Field,index:number) => {
             const activeClassName = this.currentActiveFeild.id === Field.id && 'active'
             return h('div',{
                 class:`ease-form-row ${activeClassName}`,
@@ -54,8 +43,9 @@ export default {
                         cursor:'grab',
                         flex:1
                     },
-                    // when Field.validate change, we hope to create a new form-item instance,because of the directives v-validate won't update
-                    key:JSON.stringify(Field.validate),
+                    // when Field.validate change, we hope to create a new form-item instance, because of the directives v-validate won't update or re-initial
+                    //key:JSON.stringify(Field.validate),
+                    key:Field.id,
                     scopedSlots:Field.transmit.scopedSlots,
                     nativeOn:{
                         click:_ => this.clickHandler(index,Field)
@@ -70,44 +60,19 @@ export default {
             ])
         })])
     },
-    watch:{
-        // currentValue:{
-        //     handler(){
-        //         // waiting for a moment, ensuring the vee-validate computed completed
-        //         this.$nextTick(_ => {
-        //             this.updateInnerConfig()
-        //         })
-        //     },
-        //     deep:true
-        // },
-        config(){
-            this.updateInnerConfig()
-        }
-    },
-    created(){
-        formVm.form = this
-        this.updateInnerConfig()
-        console.log('this',this)
-    },
     data(){
         return {
             currentActiveFeild:{},
-            resolvedConfig:[],
-            currentValue:{}
         }
     },
     methods:{
-        ...instanceApi,
-        updateInnerConfig(){
-            const res = formVm.init(this.config,this.currentValue)
-            this.resolvedConfig = res
-        },
         updateConfig(e:any){
             const {item,oldIndex,newIndex} = e
             const { group } = item.dataset
             const inputs = scheduler.input[(group as string)]
             const input = inputs[oldIndex]
             console.log('info',input)
+            //?? 是否用 this.value更好？
             this.config.splice(newIndex,0,generateFieldConfig(input.type))
             console.log('add',this.config)
             this.$emit('input',this.config)

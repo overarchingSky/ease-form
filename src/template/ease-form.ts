@@ -1,12 +1,12 @@
-import { instanceApi } from './../core/api';
 import Vue from 'vue'
 import {  VNode } from 'vue/types/vnode';
 import { CreateElement } from "vue";
 import { Field } from '../../types/field';
-import { formVm } from '../core/instence';
+import mixins from '../core/mixins'
 console.log('Vue',Vue)
 export default Vue.extend({
     name: "ease-form",
+    mixins:[mixins],
     props:{
         config:{
             type:Array,
@@ -20,44 +20,16 @@ export default Vue.extend({
         },
         language:{
             type:String
-        },
-        dictionary:{
-            type:Object
-        }
-    },
-    data(){
-        return {
-            currentValue:this.value || {},
-            _config:null
-        }
-    },
-    watch:{
-        value(val){
-            this.currentValue = val || {}
-        },
-        config:{
-            handler(){
-                console.log('shoule update ease-form')
-                this._config = formVm.init(this.config,this.currentValue)
-            },
-            deep:true
         }
     },
     render(h:CreateElement) : VNode{
         console.log('this.$slots',this.$slots)
         return h('form',{
             class:'ease-form',
-        }, [this._config.map((Field:Field) => {
+        }, [this.resolvedConfig.map((Field:Field) => {
             return h(Field._formItem,{
                 scopedSlots:Field.transmit.scopedSlots
             })
         })])
     },
-    created(){
-        formVm.form = this
-        this._config = formVm.init(this.config,this.value)
-    },
-    methods:{
-        ...instanceApi
-    }
 })

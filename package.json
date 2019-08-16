@@ -60,6 +60,7 @@
         "vee-validate": "^2.2.14",
         "vue-codemirror": "^4.0.6",
         "vuedraggable": "^2.23.0",
+        "vuex": "^3.1.1",
         "webpack-cli": "^3.3.6"
     },
     "devDependencies": {
