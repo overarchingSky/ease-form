@@ -18,7 +18,7 @@ declare class Field {
     };
     _formItem: CompOptions;
     validate: {
-        rules:[],
+        rules:{},
         // 触发事件
         trigger?:{
             // 触发验证的事件列表,被vee-validate一致，使用“|”做分割

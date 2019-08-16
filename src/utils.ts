@@ -33,7 +33,7 @@ export function generateFieldConfig(type:string){
             annotation: "ease-form-default-annotation"
         },
         validate:{
-            rules:[],
+            rules:{},
             trigger:{
                 events:[],
                 // modifiers

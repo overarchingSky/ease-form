@@ -28,3 +28,7 @@ export const triggerEvents = [{
 }]
 
 export const rules = Object.keys(Validator.rules)
+
+// how to deal with the rules such as "is", "is_not"?
+
+export const rulesWithArg = ['after','before','between','confirmed','date_between','date_format','decimal','digits','dimensions','ext','included','excluded','length','max','min','max_value','min_value','mimes','regex','required_if','size','url']

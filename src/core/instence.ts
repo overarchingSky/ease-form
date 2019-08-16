@@ -112,7 +112,7 @@ function initInput(FieldConfig:Field,formValue:obj){
         ref:FieldConfig.field,
         directives:[{
             name: 'validate',
-            value: validate.rules.join("|"),
+            value: validate.rules,
             //expression: `"${validate.rules.join("|")}"`,
             //arg: 'value',
             modifiers: validate.trigger.options
@@ -124,7 +124,7 @@ function initInput(FieldConfig:Field,formValue:obj){
 function initSlot(slotName:string,FieldConfig:Field){
     let text = FieldConfig[slotName]
     if(slotName === 'error'){
-        text = formVm.form.errors.first(FieldConfig.field)
+        text = formVm.form.errors.collect(FieldConfig.field).join(';')
     }
     let opt:VNodeData = {
         // when Field.validate change, we hope to create a new form-item instance, because of the directives v-validate won't update or re-initial

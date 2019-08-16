@@ -24,8 +24,8 @@
         <i class="el-collapse-item__arrow el-icon-arrow-right"></i>
       </div>
       <div>
-        <el-tag v-for="rule in value.validate.rules" :key="rule">{{
-          rule
+        <el-tag v-for="rule in arrayedRules" :key="rule">{{
+          rule.label
         }}</el-tag>
       </div>
     </div>
@@ -72,6 +72,7 @@ import {CompOptions} from '../../../types/comp-options'
 import {formateSelectorOptions} from '../../utils'
 import validateSelector from './validate-selector.vue'
 import Tip from './base/Tip.vue'
+import {rulesWithArg} from '../../core/validate'
 export default {
   props: {
     value: {
@@ -108,6 +109,22 @@ export default {
     },
     rulePicker() {
       return this.$refs.rulePicker
+    },
+    arrayedRules() {
+      let rules = this.value.validate.rules
+      return Object.keys(rules).map(ruleName => {
+        let rule = true
+        let label = ruleName
+        if (rulesWithArg.includes(ruleName)) {
+          rule = rules[ruleName]
+          label = ruleName + ':' + JSON.stringify(rule)
+        }
+        return {
+          ruleName,
+          label,
+          rule
+        }
+      })
     }
   },
   data() {

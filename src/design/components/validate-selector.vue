@@ -14,7 +14,7 @@
           <div class="search">
             <el-input
               v-model="rule"
-              @keydown.native.enter="addRule(rule)"
+              @keydown.native.enter="addRule(rule, true)"
               placeholder="press enter，add rule"
               clearable
             >
@@ -34,11 +34,12 @@
             <el-header>selected rule</el-header>
             <div class="scroller">
               <el-tag
-                v-for="(rule, index) in selectedRules"
-                :key="rule"
-                @close="removeRule(index, rule)"
+                v-for="(rule, index) in arrayedSelectedRules"
+                :key="rule.ruleName"
+                @click.native="updateRule(rule.ruleName, index)"
+                @close="removeRule(index, rule.ruleName)"
                 closable
-                >{{ rule }}</el-tag
+                >{{ rule.label }}</el-tag
               >
             </div>
           </div>
@@ -101,12 +102,25 @@
         </div>
       </div>
     </el-drawer>
+    <el-dialog
+      title="Additional parameters"
+      :visible.sync="additionalParametersDialog"
+    >
+      <code-editor v-model="ruleWithAdditionalParameters"></code-editor>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="additionalParametersDialog = false">取 消</el-button>
+        <el-button type="primary" @click="confirmAdditionalParameters"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import {rules, triggerEvents} from '../../core/validate'
+import {rules, triggerEvents, rulesWithArg} from '../../core/validate'
 import Tip from './base/Tip.vue'
+import codeEditor from './code-editor'
 export default {
   name: 'ease-design-validate-selector',
   props: {
@@ -115,7 +129,8 @@ export default {
     }
   },
   components: {
-    Tip
+    Tip,
+    codeEditor
   },
   data() {
     return {
@@ -126,14 +141,33 @@ export default {
       options: this.value.trigger.options,
       autoValidate: !this.value.trigger.options.disable,
       modifiers: [],
-      events: triggerEvents
+      events: triggerEvents,
+      // temporary state ,temporary storage the editing rule name
+      currentHandledRuleName: '',
+      // display additional parameters dialog
+      additionalParametersDialog: false,
+      // rule additional parameters
+      ruleWithAdditionalParameters: ''
     }
   },
   computed: {
     currrentRules() {
-      return this.rules.filter(
-        r => !this.selectedRules.includes(r) && new RegExp(this.rule).test(r)
-      )
+      return this.rules.filter(r => !(r in this.selectedRules))
+    },
+    arrayedSelectedRules() {
+      return Object.keys(this.selectedRules).map(ruleName => {
+        let rule = true
+        let label = ruleName
+        if (rulesWithArg.includes(ruleName)) {
+          rule = this.selectedRules[ruleName]
+          label = ruleName + ':' + JSON.stringify(rule)
+        }
+        return {
+          ruleName,
+          label,
+          rule
+        }
+      })
     }
   },
   watch: {
@@ -176,17 +210,51 @@ export default {
       this.$emit('input', this.value)
       done()
     },
-    selectRule(rule, index) {
-      this.selectedRules.push(rule)
-      //this.rules.splice(index, 1)
+    selectRule(key, index) {
+      console.log('rule', key)
+      this.currentHandledRuleName = key
+      if (rulesWithArg.includes(key)) {
+        // show dialog
+        this.ruleWithAdditionalParameters = `{
+  "${key}":
+}`
+        this.additionalParametersDialog = true
+      } else {
+        this.addRule(key)
+      }
     },
-    addRule(rule) {
-      this.selectedRules.push(rule)
-      this.rule = ''
+    updateRule(key, index) {
+      this.currentHandledRuleName = key
+      if (rulesWithArg.includes(key)) {
+        // show dialog
+        this.ruleWithAdditionalParameters = `{
+  "${key}":${JSON.stringify(this.selectedRules[key])}
+}`
+        this.additionalParametersDialog = true
+      }
+    },
+    addRule(ruleKey, rule = true, clear = false) {
+      console.log('ruleKey', ruleKey)
+      this.$set(this.selectedRules, ruleKey, rule)
+      clear && (this.rule = '')
     },
     removeRule(index, rule) {
-      this.selectedRules.splice(index, 1)
-      //this.rules.unshift(rule)
+      console.log('remove', rule, this.selectedRules)
+      //delete this.selectedRules[rule]
+      this.$delete(this.selectedRules, rule)
+    },
+    confirmAdditionalParameters() {
+      console.log(
+        'confirm',
+        this.currentHandledRuleName,
+        this.ruleWithAdditionalParameters
+      )
+      this.addRule(
+        this.currentHandledRuleName,
+        this.ruleWithAdditionalParameters[this.currentHandledRuleName]
+      )
+      this.currentHandledRuleName = ''
+      this.additionalParametersDialog = false
     },
     show() {
       this.dialog = true

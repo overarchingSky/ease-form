@@ -29,7 +29,12 @@ export default {
             if(typeof this.value === 'string'){
                 return this.value
             }
-            return jsBeautify(stringifyObj(this.value))
+            try {
+                return jsBeautify(stringifyObj(this.value))
+            } catch (error) {
+                return jsBeautify(this.value)
+            }
+            
         },
         codemirror(){
             return this.$children[0].codemirror
@@ -102,7 +107,11 @@ export default {
             }
         },
         updateConfig(code:any){
-            this.$emit('input',parseObj(code))
+            try {
+                this.$emit('input',parseObj(code))
+            } catch (error) {
+               
+            }
         },
         location(){
             this.$nextTick(_ => {
