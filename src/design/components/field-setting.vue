@@ -97,7 +97,7 @@ export default {
     },
     Texts() {
       let texts = this.slotNames.filter(
-        slotName => !!this.value.slots[slotName]
+        slotName => !!this.value.slots[slotName] && slotName !== 'error'
       )
       texts.push('placeholder')
       return texts

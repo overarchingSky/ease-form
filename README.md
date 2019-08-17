@@ -76,7 +76,7 @@ module -> Widget 插拔模式
 - 灵活的错误消息提示
 - 支持灵活的字段注解
 - 集成 vee-validate 表单验证
-- 远程校验
+- 远程校验 --(https://baianat.github.io/vee-validate/guide/custom-rules.html#non-immediate-rules)
 - 自定义表单验证触发时机
 - 数据联动
 - 自动计算
