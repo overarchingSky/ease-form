@@ -43,11 +43,13 @@
               class="ease-design-layout__code--i18n"
               v-model="dictionary"
             ></code-editor>
+            <el-button
+              class="ease-design-layout__code--i18n__addLanguage"
+              @click="addLanguage"
+              >+</el-button
+            >
           </el-tab-pane>
         </el-tabs>
-        <div>
-          <el-button @click="addLanguage">+</el-button>
-        </div>
       </div>
     </main>
     <language-selector
@@ -103,7 +105,6 @@ export default {
   },
   watch: {
     currentFieldKey() {
-      console.log('update', Object.keys(this.dictionary))
       this.changeLanguage(Object.keys(this.dictionary))
       const dictionary = this.dictionary
       for (let language in dictionary) {
@@ -138,7 +139,6 @@ export default {
         }
       }
       this.dictionary = {...dictionary}
-      console.log('dictionary', dictionary)
     },
     updateDictionaryField(language) {
       const dictionary = this.dictionary
@@ -208,6 +208,21 @@ export default {
           > div {
             height: 100%;
           }
+        }
+      }
+
+      &--i18n {
+        &__addLanguage {
+          position: absolute;
+          bottom: 15px;
+          right: 15px;
+          border-radius: 100%;
+          height: 40px;
+          width: 40px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }

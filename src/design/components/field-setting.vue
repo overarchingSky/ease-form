@@ -24,9 +24,12 @@
         <i class="el-collapse-item__arrow el-icon-arrow-right"></i>
       </div>
       <div>
-        <el-tag v-for="rule in arrayedRules" :key="rule">{{
-          rule.label
-        }}</el-tag>
+        <el-tag
+          v-for="rule in arrayedRules"
+          :disable-transitions="true"
+          :key="rule"
+          >{{ rule.label }}</el-tag
+        >
       </div>
     </div>
     <el-collapse v-model="activeNames">
@@ -137,7 +140,6 @@ export default {
       return Math.max(...labels.map(label => label.length)) * 10 + 'px'
     },
     getSlotTemplates(slotName) {
-      console.log('getGroupedSlots', scheduler.getGroupedSlots(slotName))
       let res = scheduler.getGroupedSlots(slotName).map((comp: CompOptions) => {
         return {
           label: comp.name,
@@ -149,17 +151,7 @@ export default {
     showRulesPicker() {
       this.rulePicker.show()
     }
-  },
-  watch: {
-    value(val) {
-      console.log('this.value._formItem', this.value)
-    }
   }
-  // data(){
-  //     return {
-  //         formValue:cloneDeep(this.value)
-  //     }
-  // }
 }
 </script>
 <style lang="less">

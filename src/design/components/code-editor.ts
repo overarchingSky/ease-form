@@ -24,39 +24,44 @@ export default {
             type:Boolean
         }
     },
+    data(){
+        return {
+            // tempValue:temporary value,if it's same as value, stringifyValue will not be update
+            // stringifyValue will be update only when prop value changed without input in codemirror
+            // when the codemirror be input, we hope component'render function not be executed, because it will re-render entirely codemirror，and cause input cursor move to an unexpected position
+            tempValue:'',
+            stringifyValue: this.formatValue()
+        }
+    },
     computed:{
-        _value(){
-            if(typeof this.value === 'string'){
-                return this.value
-            }
-            try {
-                return jsBeautify(stringifyObj(this.value))
-            } catch (error) {
-                return jsBeautify(this.value)
-            }
-            
-        },
         codemirror(){
             return this.$children[0].codemirror
         }
     },
     watch:{
+        value:{
+            handler(){
+                let newValue = this.formatValue()
+                if(newValue !== this.tempValue){
+                    this.stringifyValue = this.formatValue()
+                }
+                // 此处会导致编辑代码时，代码块被选中
+                //this.location()
+            },
+            deep:true
+        },
         activeKey:{
             handler(val){
                 this.location()
             },
             immediate:true
-        },
-        value(){
-            // 此处会导致编辑代码时，代码块被选中
-            //this.location()
         }
     },
     render(h:CreateElement){
         return h(codemirror,{
             ref:'code',
             props:{
-                value:this._value,
+                value:this.stringifyValue,
                 options: {
                     // codemirror options
                     tabSize: 4,
@@ -78,6 +83,17 @@ export default {
         })
     },
     methods:{
+        formatValue(val = this.value){
+            if(typeof val=== 'string'){
+                return jsBeautify(val)
+            }
+            try {
+                return jsBeautify(stringifyObj(val))
+            } catch (error) {
+                console.warn('the code must be json');
+                return jsBeautify(val)
+            }
+        },
         scrollFeild(id){
             let lineCount = this.codemirror.lineCount()
             let startIndex = -1
@@ -109,6 +125,7 @@ export default {
         updateConfig(code:any){
             try {
                 this.$emit('input',parseObj(code))
+                this.tempValue = this.formatValue(code)
             } catch (error) {
                
             }

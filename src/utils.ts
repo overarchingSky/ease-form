@@ -35,7 +35,7 @@ export function generateFieldConfig(type:string){
         validate:{
             rules:{},
             trigger:{
-                events:[],
+                events:['blur'],
                 // modifiers
                 options:{
                     continues:false,

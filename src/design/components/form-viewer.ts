@@ -27,12 +27,14 @@ export default {
                 },
             },
             on:{
-                add:this.updateConfig
+                add:this.updateConfig,
+                sort:this.sortHandler
             }
         }, [formVm.config.map((Field:Field,index:number) => {
-            const activeClassName = this.currentActiveFeild.id === Field.id && 'active'
+            const activeClassName = this.currentActiveFeild && this.currentActiveFeild.id === Field.id && 'active'
             return h('div',{
                 class:`ease-form-row ${activeClassName}`,
+                key: Field.id,
                 style:{
                     alignItems:'center'
                 }
@@ -62,7 +64,10 @@ export default {
     },
     data(){
         return {
-            currentActiveFeild:{},
+            // both of add and sort event handler will be dispatch when add a new field, but only add event handler was expected
+            // adding state is expected to deal with the case of add
+            adding:false,
+            currentActiveFeild:null,
         }
     },
     methods:{
@@ -72,10 +77,21 @@ export default {
             const inputs = scheduler.input[(group as string)]
             const input = inputs[oldIndex]
             console.log('info',input)
-            //?? 是否用 this.value更好？
             this.config.splice(newIndex,0,generateFieldConfig(input.type))
             console.log('add',this.config)
             this.$emit('input',this.config)
+            this.adding = true
+        },
+        sortHandler(e){
+            if(this.adding){
+                return this.adding = false
+            }
+            let { oldIndex, newIndex } = e
+            let field = this.config.splice(oldIndex,1)[0]
+            this.config.splice(newIndex,0,field)
+            this.$nextTick(_ => {
+                this.clickHandler(newIndex,field)
+            })
         },
         deleteField(index){
             this.config.splice(index,1)
