@@ -24,10 +24,10 @@
           <el-header>place picker</el-header>
           <div class="rule-picker scroller">
             <el-tag
-              v-for="(rule, index) in currrentRules"
-              :key="rule"
+              v-for="(rule, index) in arrayedCurrentRules"
+              :key="rule.ruleName"
               @click.native="selectRule(rule, index)"
-              >{{ rule }}</el-tag
+              >{{ rule.ruleName }}</el-tag
             >
           </div>
           <div class="ease-design-validate__section" style="height:150px;">
@@ -36,7 +36,7 @@
               <el-tag
                 v-for="(rule, index) in arrayedSelectedRules"
                 :key="rule.ruleName"
-                @click.native="updateRule(rule.ruleName, index)"
+                @click.native="updateRule(rule, index)"
                 @close="removeRule(index, rule.ruleName)"
                 closable
                 >{{ rule.label }}</el-tag
@@ -137,8 +137,9 @@ export default {
       dialog: false,
       rule: '',
       rules,
-      selectedRules: this.value.rules,
-      options: this.value.trigger.options,
+      selectedRules: {}, //JSON.parse(JSON.stringify(this.value.rules)),
+      options: {},
+      validate: JSON.parse(JSON.stringify(this.value)),
       autoValidate: !this.value.trigger.options.disable,
       modifiers: [],
       events: triggerEvents,
@@ -152,20 +153,32 @@ export default {
   },
   computed: {
     currrentRules() {
-      return this.rules.filter(r => !(r in this.selectedRules))
+      return Object.keys(this.rules).filter(r => !(r in this.selectedRules))
+    },
+    arrayedCurrentRules() {
+      return this.currrentRules.map(ruleName => {
+        let veeRule = this.rules[ruleName]
+        return {
+          ruleName,
+          veeRule
+        }
+      })
     },
     arrayedSelectedRules() {
       return Object.keys(this.selectedRules).map(ruleName => {
         let rule = true
         let label = ruleName
-        if (rulesWithArg.includes(ruleName)) {
-          rule = this.selectedRules[ruleName]
+        let needExtraParmas = this.selectedRules[ruleName].veeRule.options
+          .needExtraParmas
+        if (needExtraParmas) {
+          rule = this.selectedRules[ruleName].rule
           label = ruleName + ':' + JSON.stringify(rule)
         }
         return {
           ruleName,
           label,
-          rule
+          rule,
+          veeRule: this.selectedRules[ruleName].veeRule
         }
       })
     }
@@ -187,55 +200,78 @@ export default {
     autoValidate(val) {
       this.options.disable = !val
       if (!val) {
-        this.value.trigger.events = []
+        this.validate.trigger.events = []
       }
     },
-    value() {
-      this.selectedRules = this.value.rules
-      this.options = this.value.trigger.options
+    value: {
+      handler(val) {
+        this.validate = JSON.parse(JSON.stringify(val))
+        //this.selectedRules = this.value.rules
+        //this.options = this.validate.trigger.options
+      },
+      immediate: true
     }
   },
   methods: {
     reset() {
       this.rule = ''
+      this.selectedRules = []
+      Object.keys(this.validate.rules).forEach(ruleName => {
+        this.addRule(ruleName, this.validate.rules[ruleName])
+      })
       this.modifiers = Object.keys(this.options).filter(key => {
         if (key === 'disable') {
           return false
         }
         return !!this.options[key]
       })
-      this.autoValidate = !this.value.trigger.options.disable
+      this.options = this.validate.trigger.options
+      this.autoValidate = !this.validate.trigger.options.disable
     },
     handleClose(done) {
-      this.$emit('input', this.value)
+      // Synchronize rule to this.value.rule
+      this.validate.rules = Object.keys(this.selectedRules).reduce(
+        (obj, ruleName) => {
+          obj[ruleName] = this.selectedRules[ruleName].rule
+          return obj
+        },
+        {}
+      )
+      this.$emit('input', this.validate)
       done()
     },
-    selectRule(key, index) {
-      console.log('rule', key)
-      this.currentHandledRuleName = key
-      if (rulesWithArg.includes(key)) {
+    selectRule(rule, index) {
+      let {ruleName, veeRule} = rule
+      this.currentHandledRuleName = ruleName
+      console.log('rule', rule)
+      if (veeRule.options.needExtraParmas) {
         // show dialog
         this.ruleWithAdditionalParameters = `{
-  "${key}":
+  "${ruleName}":
 }`
         this.additionalParametersDialog = true
       } else {
-        this.addRule(key)
+        this.addRule(ruleName)
       }
     },
-    updateRule(key, index) {
-      this.currentHandledRuleName = key
-      if (rulesWithArg.includes(key)) {
+    updateRule(config, index) {
+      console.log('config', config, JSON.stringify(config))
+      let {ruleName, veeRule, rule} = config
+      this.currentHandledRuleName = ruleName
+      if (veeRule.options.needExtraParmas) {
         // show dialog
         this.ruleWithAdditionalParameters = `{
-  "${key}":${JSON.stringify(this.selectedRules[key])}
+  "${ruleName}":${JSON.stringify(rule)}
 }`
         this.additionalParametersDialog = true
       }
     },
-    addRule(ruleKey, rule = true, clear = false) {
-      console.log('ruleKey', ruleKey)
-      this.$set(this.selectedRules, ruleKey, rule)
+    addRule(ruleName, rule = true, clear = false) {
+      this.$set(this.selectedRules, ruleName, {
+        veeRule: this.rules[ruleName],
+        rule
+      })
+      console.log('selectedRules', this.selectedRules)
       clear && (this.rule = '')
     },
     removeRule(index, rule) {
@@ -252,6 +288,7 @@ export default {
       this.addRule(
         this.currentHandledRuleName,
         this.ruleWithAdditionalParameters[this.currentHandledRuleName]
+        //`${this.currentHandledRuleName}:${this.ruleWithAdditionalParameters[this.currentHandledRuleName]}`
       )
       this.currentHandledRuleName = ''
       this.additionalParametersDialog = false
