@@ -47,7 +47,5 @@ Validator.extend('tianlong',{
   getMessage: field => 'The ' + field + ' value is not tianlong.',
   validate: value => value === 'tianlong'
 },{
-  needExtraParmas:true
+  needExtraParmas:false
 } as VeeOptions)
-// @ts-ignore
-window.v = Validator

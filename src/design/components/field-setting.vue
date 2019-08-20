@@ -118,7 +118,7 @@ export default {
       return Object.keys(rules).map(ruleName => {
         let rule = true
         let label = ruleName
-        if (rulesWithArg.includes(ruleName)) {
+        if (rules[ruleName] !== true) {
           rule = rules[ruleName]
           label = ruleName + ':' + JSON.stringify(rule)
         }

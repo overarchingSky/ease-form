@@ -170,10 +170,14 @@ export default {
         let label = ruleName
         let needExtraParmas = this.selectedRules[ruleName].veeRule.options
           .needExtraParmas
-        if (needExtraParmas) {
+        if (this.selectedRules[ruleName].rule !== true) {
           rule = this.selectedRules[ruleName].rule
           label = ruleName + ':' + JSON.stringify(rule)
         }
+        // if (needExtraParmas) {
+        //   rule = this.selectedRules[ruleName].rule
+        //   label = ruleName + ':' + JSON.stringify(rule)
+        // }
         return {
           ruleName,
           label,
@@ -255,16 +259,13 @@ export default {
       }
     },
     updateRule(config, index) {
-      console.log('config', config, JSON.stringify(config))
       let {ruleName, veeRule, rule} = config
       this.currentHandledRuleName = ruleName
-      if (veeRule.options.needExtraParmas) {
-        // show dialog
-        this.ruleWithAdditionalParameters = `{
+      // show dialog
+      this.ruleWithAdditionalParameters = `{
   "${ruleName}":${JSON.stringify(rule)}
 }`
-        this.additionalParametersDialog = true
-      }
+      this.additionalParametersDialog = true
     },
     addRule(ruleName, rule = true, clear = false) {
       this.$set(this.selectedRules, ruleName, {
