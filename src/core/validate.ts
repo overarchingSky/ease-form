@@ -44,6 +44,8 @@ Object.keys(rules).forEach((ruleName:string) => {
   }
 })
 
+// extend demo
+
 Validator.extend('tianlong',{
   getMessage: field => 'The ' + field + ' value is not tianlong.',
   validate: value => value === 'tianlong'
@@ -51,7 +53,7 @@ Validator.extend('tianlong',{
   needExtraParmas:false
 } as VeeOptions)
 
-Validator.extend('remote',(value,args) => {
+Validator.extend('remote',( value, args ) => {
   // axios({
   //   method:'get',
   //   url:'http://bit.ly/2mTM3nY',

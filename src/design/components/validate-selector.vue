@@ -14,7 +14,7 @@
           <div class="search">
             <el-input
               v-model="rule"
-              @keydown.native.enter="addRule(rule, true)"
+              @keydown.native.enter="confirmToAdd(rule)"
               placeholder="press enter，add rule"
               clearable
             >
@@ -153,7 +153,9 @@ export default {
   },
   computed: {
     currrentRules() {
-      return Object.keys(this.rules).filter(r => !(r in this.selectedRules))
+      return Object.keys(this.rules).filter(
+        r => !(r in this.selectedRules) && new RegExp(this.rule).test(r)
+      )
     },
     arrayedCurrentRules() {
       return this.currrentRules.map(ruleName => {
@@ -261,13 +263,17 @@ export default {
       }
       this.additionalParametersDialog = true
     },
-    addRule(ruleName, rule = true, clear = false) {
+    confirmToAdd(ruleName) {
+      if (this.arrayedCurrentRules.length > 0) {
+        this.selectRule(this.arrayedCurrentRules[0], 0)
+        this.rule = ''
+      }
+    },
+    addRule(ruleName, rule = true) {
       this.$set(this.selectedRules, ruleName, {
         veeRule: this.rules[ruleName],
         rule
       })
-      console.log('selectedRules', this.selectedRules)
-      clear && (this.rule = '')
     },
     removeRule(index, rule) {
       console.log('remove', rule, this.selectedRules)
