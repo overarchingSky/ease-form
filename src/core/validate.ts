@@ -1,6 +1,7 @@
 import { VeeOptions } from './../../types/vee-validate.d';
 import Vue from 'vue';
 import VeeValidate, { Validator } from 'vee-validate';
+import axios from 'axios'
 
 Vue.use(VeeValidate,{
     classes: true,
@@ -48,4 +49,25 @@ Validator.extend('tianlong',{
   validate: value => value === 'tianlong'
 },{
   needExtraParmas:false
+} as VeeOptions)
+
+Validator.extend('remote',(value,args) => {
+  // axios({
+  //   method:'get',
+  //   url:'http://bit.ly/2mTM3nY',
+  //   responseType:'stream'
+  // })
+  let params
+  if(typeof args === 'string'){
+    params = {
+      url:args,
+      method:'get'
+    }
+  }else if(typeof args === 'object'){
+     params = args
+  }
+  return axios(params).then()
+},{
+  immediate:false,
+  needExtraParmas:true
 } as VeeOptions)

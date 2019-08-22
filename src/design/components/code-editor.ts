@@ -2,10 +2,8 @@ import Vue, { CreateElement } from 'vue'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/mode/javascript/javascript.js'
 // theme css
-import 'codemirror/theme/base16-dark.css'
-// monokai.css
-// 3024-day
-// 3024-night
+// import 'codemirror/theme/base16-dark.css'
+import 'codemirror/theme/3024-day.css'
 import jsBeautify from './js-beautify'
 import { stringifyObj, parseObj } from '../../utils';
 export default {
@@ -65,16 +63,11 @@ export default {
                 options: {
                     // codemirror options
                     tabSize: 4,
-                    mode: 'text/javascript',
-                    theme: 'base16-dark',
+                    mode:'text/javascript',
+                    theme: '3024-day',
                     lineNumbers: true,
                     line: true,
-                    // highlightSelectionMatches:{
-                    //     showToken:true,
-
-                    // },
-                    lineWrapping:true
-                    // more codemirror options, 更多 codemirror 的高级配置...
+                    lineWrapping:true,
                   }
             },
             on:{
@@ -122,10 +115,12 @@ export default {
                 endIndex
             }
         },
-        updateConfig(code:any){
+        updateConfig(code:any){  
             try {
-                this.$emit('input',parseObj(code))
-                this.tempValue = this.formatValue(code)
+                let output = parseObj(code)
+                code = this.formatValue(output)
+                this.$emit('input',output)
+                this.tempValue = code
             } catch (error) {
                
             }

@@ -1,0 +1,2 @@
+- i18nz selector and localized Files https://baianat.github.io/vee-validate/guide/localization.html#localized-files
+- 远程校验

@@ -49,6 +49,7 @@
         "awesome-typescript-loader": "^5.2.1",
         "element-ui": "^2.11.1",
         "js-beautify": "^1.10.1",
+        "json5": "^2.1.0",
         "less": "^3.9.0",
         "less-loader": "^5.0.0",
         "lodash-es": "^4.17.15",

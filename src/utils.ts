@@ -1,4 +1,5 @@
 import { CompOptions } from './../types/comp-options.d';
+import json from 'json5'
 import { isUndefined } from 'util';
 /**
  * 是否是vue组件，区别于原生元素
@@ -58,9 +59,7 @@ export function formateSelectorOptions(options){
 }
 
 
-export function stringifyObj(src){
-    return JSON.stringify(src)
-}
+
 
 export function StringFunction(src:obj[]|obj){
     if((src as obj[]).push){
@@ -92,9 +91,12 @@ export function StringFunction(src:obj[]|obj){
     }
 }
 
+export function stringifyObj(src){
+    return json.stringify(src)
+}
 
 export function parseObj(strObj){
-    return JSON.parse(strObj)
+    return json.parse(strObj)
     // var obj = JSON.parse(strObj);
     // var funReg = /function\s\(.*\)/;
     // for(var key in obj){

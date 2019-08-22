@@ -168,16 +168,10 @@ export default {
       return Object.keys(this.selectedRules).map(ruleName => {
         let rule = true
         let label = ruleName
-        let needExtraParmas = this.selectedRules[ruleName].veeRule.options
-          .needExtraParmas
         if (this.selectedRules[ruleName].rule !== true) {
           rule = this.selectedRules[ruleName].rule
           label = ruleName + ':' + JSON.stringify(rule)
         }
-        // if (needExtraParmas) {
-        //   rule = this.selectedRules[ruleName].rule
-        //   label = ruleName + ':' + JSON.stringify(rule)
-        // }
         return {
           ruleName,
           label,
@@ -262,9 +256,9 @@ export default {
       let {ruleName, veeRule, rule} = config
       this.currentHandledRuleName = ruleName
       // show dialog
-      this.ruleWithAdditionalParameters = `{
-  "${ruleName}":${JSON.stringify(rule)}
-}`
+      this.ruleWithAdditionalParameters = {
+        [ruleName]: rule
+      }
       this.additionalParametersDialog = true
     },
     addRule(ruleName, rule = true, clear = false) {
