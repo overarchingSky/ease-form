@@ -72,7 +72,7 @@
 import {cloneDeep} from 'lodash-es'
 import scheduler from '../../core/scheduler'
 import {CompOptions} from '../../../types/comp-options'
-import {formateSelectorOptions} from '../../utils'
+import {formateSelectorOptions, stringifyObj} from '../../utils'
 import validateSelector from './validate-selector.vue'
 import Tip from './base/Tip.vue'
 import {rulesWithArg} from '../../core/validate'
@@ -120,7 +120,7 @@ export default {
         let label = ruleName
         if (rules[ruleName] !== true) {
           rule = rules[ruleName]
-          label = ruleName + ':' + JSON.stringify(rule)
+          label = ruleName + ':' + stringifyObj(rule)
         }
         return {
           ruleName,

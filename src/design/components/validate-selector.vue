@@ -121,6 +121,7 @@
 import {rules, triggerEvents, rulesWithArg} from '../../core/validate'
 import Tip from './base/Tip.vue'
 import codeEditor from './code-editor'
+import {clone, stringifyObj} from '../../utils'
 export default {
   name: 'ease-design-validate-selector',
   props: {
@@ -139,7 +140,7 @@ export default {
       rules,
       selectedRules: {}, //JSON.parse(JSON.stringify(this.value.rules)),
       options: {},
-      validate: JSON.parse(JSON.stringify(this.value)),
+      validate: clone(this.value),
       autoValidate: !this.value.trigger.options.disable,
       modifiers: [],
       events: triggerEvents,
@@ -172,7 +173,7 @@ export default {
         let label = ruleName
         if (this.selectedRules[ruleName].rule !== true) {
           rule = this.selectedRules[ruleName].rule
-          label = ruleName + ':' + JSON.stringify(rule)
+          label = ruleName + ':' + stringifyObj(rule)
         }
         return {
           ruleName,
@@ -205,9 +206,7 @@ export default {
     },
     value: {
       handler(val) {
-        this.validate = JSON.parse(JSON.stringify(val))
-        //this.selectedRules = this.value.rules
-        //this.options = this.validate.trigger.options
+        this.validate = clone(val)
       },
       immediate: true
     }

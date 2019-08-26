@@ -46,7 +46,6 @@ export default {
                         flex:1
                     },
                     // when Field.validate change, we hope to create a new form-item instance, because of the directives v-validate won't update or re-initial
-                    //key:JSON.stringify(Field.validate),
                     key:Field.id,
                     scopedSlots:Field.transmit.scopedSlots,
                     nativeOn:{

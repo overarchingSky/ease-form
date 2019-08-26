@@ -1,5 +1,8 @@
 import { CompOptions } from './../types/comp-options.d';
 import json from 'json5'
+import stringify  from 'serialize-javascript'
+// @ts-ignore
+window.stringify = stringify
 import { isUndefined } from 'util';
 /**
  * 是否是vue组件，区别于原生元素
@@ -27,6 +30,9 @@ export function generateFieldConfig(type:string){
         formItem:'ease-form-default-item',
         label:'label',
         annotation:'field desc',
+        linkage:{
+            rule:null
+        },
         slots:{
             default:type,
             label: "ease-form-default-label",
@@ -92,11 +98,14 @@ export function StringFunction(src:obj[]|obj){
 }
 
 export function stringifyObj(src){
-    return json.stringify(src)
+    return stringify(src)
+    //return json.stringify(src)
 }
 
 export function parseObj(strObj){
-    return json.parse(strObj)
+    return eval(`(${strObj})`)
+    //return json.parse(strObj)
+
     // var obj = JSON.parse(strObj);
     // var funReg = /function\s\(.*\)/;
     // for(var key in obj){
@@ -112,6 +121,10 @@ export function parseObj(strObj){
     //     }
     // }
     // return obj;
+}
+
+export function clone(src){
+    return parseObj(stringifyObj(src))
 }
 
 export function isDefined(data){

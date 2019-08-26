@@ -9,6 +9,8 @@ import { Field } from "../../types/field";
 import { schedulerFormItem } from '../../types/scheduler';
 import { ResolvedField } from '../../types/resolved-field';
 import './validate'
+import { clone, stringifyObj } from '../utils';
+import { initVisibility } from './visibility';
 
 class FormVm {
     form:any = {}
@@ -36,7 +38,7 @@ class FormVm {
     }
     init(config:Field[],formValue:obj = {}):void {
         //formValue = Vue.observable(formValue)
-        this.config = JSON.parse(JSON.stringify(config))
+        this.config = clone(config)
         this.config = this.config.map((fieldConfig:Field) => {
             const formItem: schedulerFormItem = scheduler.getFormItem(fieldConfig.formItem)
             let transmit:VNodeData = fieldConfig.transmit || {}
@@ -44,7 +46,15 @@ class FormVm {
             transmit.scopedSlots = _init(formItem,fieldConfig,formValue)
             let self = this
             fieldConfig._formItem = {
+                name:'field-item-warp',
                 extends:formItem.component,
+                render(h:CreateElement,ctx) {
+                    // 重写render方法，以便添加字段显示隐藏逻辑
+                    if(initVisibility(fieldConfig,formValue)){
+                        return formItem.component.render.call(this,h, ctx)
+                    }
+                    return h('')
+                },
                 created(){
                     self.collect(`${fieldConfig.field}-${fieldConfig.id}`,this)
                 }
@@ -128,7 +138,7 @@ function initSlot(slotName:string,FieldConfig:Field){
     }
     let opt:VNodeData = {
         // when Field.validate change, we hope to create a new form-item instance, because of the directives v-validate won't update or re-initial
-        key:JSON.stringify(FieldConfig.validate),
+        key:stringifyObj(FieldConfig.validate),
         props:{
             text
         }

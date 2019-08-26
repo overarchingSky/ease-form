@@ -8,11 +8,14 @@ declare class Field {
     label: string;
     field: string;
     value: any;
-    // 传递vnode配置给组件
-    _transmit: VNodeData;
     formItem: string;
     //当前用到的slot模板
     slots:obj;
+    // 联动规则
+    linkage: Linkage;
+    _visibility:boolean;
+    // 传递vnode配置给组件
+    _transmit: VNodeData;
     _slots:{
         [key:string]:CompOptions
     };
@@ -46,6 +49,11 @@ declare interface Validate {
     required?: boolean,
     message: string,
     trigger: Event
+}
+
+declare interface Linkage {
+    ref: string | string[],
+    rule: (formValue:obj) => boolean
 }
 
 
