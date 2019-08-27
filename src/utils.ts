@@ -31,7 +31,12 @@ export function generateFieldConfig(type:string){
         label:'label',
         annotation:'field desc',
         linkage:{
-            rule:null
+            visibility:{
+                rule:null
+            },
+            computed:{
+                rule:null
+            }
         },
         slots:{
             default:type,

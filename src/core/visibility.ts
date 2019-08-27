@@ -3,18 +3,18 @@ import { isFunction, isObject } from "lodash-es";
 
 // Manage field visibility
 export function initVisibility (field:Field, formValue:obj) : boolean {
-    if(!isObject(field.linkage)){
+    if(!isObject(field.linkage.visibility)){
         return true
     }
-    const ruleFun = field.linkage && field.linkage.rule
-    if(ruleFun && !isFunction(ruleFun)){
-        console.warn(`field ${field.field} linkage.rule must be a function`)
-        return true
-    }
+    const ruleFun = field.linkage && field.linkage.visibility.rule
     if(ruleFun){
-        return ruleFun(formValue)
+        if(isFunction(ruleFun)){
+            return ruleFun(formValue)
+        }else{
+            console.warn(`field ${field.field} linkage.visibility.rule must be a function`)
+            return true
+        }
     }else {
-        // if ruleFun not exist
         return true
     }
 }

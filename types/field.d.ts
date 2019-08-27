@@ -11,6 +11,7 @@ declare class Field {
     formItem: string;
     //当前用到的slot模板
     slots:obj;
+    computedValue: (formValue:obj) => any;
     // 联动规则
     linkage: Linkage;
     _visibility:boolean;
@@ -52,8 +53,12 @@ declare interface Validate {
 }
 
 declare interface Linkage {
-    ref: string | string[],
-    rule: (formValue:obj) => boolean
+    visibility:{
+        rule: (formValue:obj) => boolean
+    }
+    computed:{
+        rule: (formValue:obj) => any
+    }
 }
 
 

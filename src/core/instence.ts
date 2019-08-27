@@ -11,6 +11,8 @@ import { ResolvedField } from '../../types/resolved-field';
 import './validate'
 import { clone, stringifyObj } from '../utils';
 import { initVisibility } from './visibility';
+import { isObject } from "lodash-es";
+import { computedValue } from './computed';
 
 class FormVm {
     form:any = {}
@@ -50,7 +52,7 @@ class FormVm {
                 extends:formItem.component,
                 render(h:CreateElement,ctx) {
                     // 重写render方法，以便添加字段显示隐藏逻辑
-                    if(initVisibility(fieldConfig,formValue)){
+                    if(isObject(fieldConfig.linkage) && initVisibility(fieldConfig,formValue)){
                         return formItem.component.render.call(this,h, ctx)
                     }
                     return h('')
@@ -98,18 +100,19 @@ function resoveSlots(formItemSlots:string[],FieldConfig:Field,formValue:obj){
     return Vue.observable(scopedSlots)
 }
 
-// function initVNodeData(FieldConfig:Field,formValue:obj){
-//     return 
-//     initInput(FieldConfig,formValue)
-// }
 
 function initInput(FieldConfig:Field,formValue:obj){
     const validate = FieldConfig.validate
+    const value = FieldConfig.linkage && computedValue(FieldConfig,formValue)
+    if(value){
+        formVm.form.$set(formValue,FieldConfig.field,value)
+    }
     let opt:VNodeData = {
         attrs:{
             name:FieldConfig.field,
             'data-vv-validate-on':validate.trigger.events.join('|'),
-            placeholder:FieldConfig.placeholder
+            placeholder:FieldConfig.placeholder,
+            readonly:!!value
         },
         props:{
             value: formValue[FieldConfig.field],
