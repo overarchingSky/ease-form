@@ -18,9 +18,6 @@ class FormVm {
     form:any = {}
     items:obj = {}
     config:Field[] = []
-    // constructor(form){
-    //     this.form = form
-    // }
     collect(key:string,formItemVm){
         if(this.items[key]){
             console.warn(`${key} has existed in formVm.items,and be Covered, place ensure safety`)
@@ -39,12 +36,10 @@ class FormVm {
         return this.form
     }
     init(config:Field[],formValue:obj = {}):void {
-        //formValue = Vue.observable(formValue)
         this.config = clone(config)
         this.config = this.config.map((fieldConfig:Field) => {
             const formItem: schedulerFormItem = scheduler.getFormItem(fieldConfig.formItem)
             let transmit:VNodeData = fieldConfig.transmit || {}
-            let scopedSlots = transmit.scopedSlots
             transmit.scopedSlots = _init(formItem,fieldConfig,formValue)
             let self = this
             fieldConfig._formItem = {
@@ -69,7 +64,6 @@ class FormVm {
 }
 
 export const formVm = Vue.observable(new FormVm())
-console.log('formVm',formVm)
 const h:CreateElement = function(...args){
     if(!formVm.form){
         throw(`instence:formVm.form has not been initial,place assigne it with vue instance, like 'this'`)
@@ -115,6 +109,7 @@ function initInput(FieldConfig:Field,formValue:obj){
             readonly:!!value
         },
         props:{
+            options:FieldConfig.options || [],
             value: formValue[FieldConfig.field],
         },
         on:{
