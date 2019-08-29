@@ -2,7 +2,9 @@ import {  CompOptions } from './comp-options.d';
 
 declare interface schedulerInput {
     advance: boolean;
-    component: CompOptions;
+    alisa?:string;
+    type?:string;
+    component: InputComponent;
 }
 
 declare interface schedulerSlots {
@@ -13,3 +15,5 @@ declare interface schedulerFormItem {
     slots: string[];
     component: CompOptions;
 }
+
+declare type InputComponent = CompOptions|string

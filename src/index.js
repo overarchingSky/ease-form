@@ -11,7 +11,7 @@ export function install(Vue) {
 }
 
 // Create module definition for Vue.use()
-export const plugin = {
+const plugin = {
   install,
   ...staticApi
 }
@@ -28,10 +28,9 @@ if (GlobalVue) {
 }
 
 // To allow use as module (npm/webpack/etc.) export component
-export default Form
+export default plugin
 
-// It's possible to expose named exports when writing components that can
-// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
-// export const RollupDemoDirective = component;
-
-//test
+export let easeForm = {
+  ...Form,
+  ...staticApi
+}

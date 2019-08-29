@@ -48,8 +48,6 @@ export default {
 }
 </script>
 <style lang="less">
-@import '../../style.less';
-
 .ease-form-item-default {
   margin: 10px;
 

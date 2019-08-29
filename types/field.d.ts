@@ -16,7 +16,7 @@ declare class Field {
     linkage: Linkage;
     _visibility:boolean;
     // 传递vnode配置给组件
-    _transmit: VNodeData;
+    transmit: VNodeData;
     _slots:{
         [key:string]:CompOptions
     };

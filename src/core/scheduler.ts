@@ -4,7 +4,7 @@ import DefaultAnnotation from '../template/annotation'
 import DefaultLabels from '../template/label'
 import DefaultErrors from '../template/error'
 import DefaultInputs from '../template/input'
-import { schedulerFormItem, schedulerSlots, schedulerInput } from '../../types/scheduler';
+import { schedulerFormItem, schedulerSlots, schedulerInput, InputComponent } from '../../types/scheduler';
 import { signAsInternalComp } from '../utils';
 import { Input } from '../../types/input-types';
 import { CreateElement } from 'vue';
@@ -21,8 +21,8 @@ class Scheduler {
         contnet:CompOptions[]
         error:CompOptions[]
         //基础输入类型
-        default:CompOptions[]
-        [key:string]:CompOptions[]
+        default:schedulerInput[]
+        [key:string]:(CompOptions|schedulerInput)[]
     } = {
         annotation:[],
         label:[],
@@ -43,6 +43,8 @@ class Scheduler {
         this.addFormItem(DefaultItems)
         this.addInput(DefaultInputs.map(input => ({
             advance:false,
+            alias:input.alias,
+            type:input.type,
             component:input
         })))
         slot.annotation = DefaultAnnotation
@@ -77,44 +79,60 @@ class Scheduler {
         }
     }
     addInput(arg: schedulerInput[]){
-        let comps:CompOptions[] = arg.map((item:schedulerInput) => {
-            return item.component
+        let comps:schedulerInput[] = arg.map((item:schedulerInput) => {
+            return item
         })
-        let base = arg.reduce((res:CompOptions[],item:schedulerInput) => {
+        let base:schedulerInput[] = arg.reduce((res:schedulerInput[],item:schedulerInput) => {
             if(!item.advance){
-                res.push(item.component)
+                res.push(item)
             }
             return res
         },[])
-        let advance = arg.reduce((res:CompOptions[],item:schedulerInput) => {
+        let advance:schedulerInput[] = arg.reduce((res:schedulerInput[],item:schedulerInput) => {
             if(item.advance){
-                res.push(item.component)
+                res.push(item)
             }
             return res
         },[])
-        console.log('this.slot.default',this.slot.default)
-        this.slot.default = [...this.slot.default,...comps]
-        this.input.base = [...this.input.base,...base]
-        this.input.advance = [...this.input.advance,...advance]
+        function merage(src = [],target = []){
+            src.forEach(comp => {
+                const index = target.findIndex(item => item.alias === comp.alias)
+                if (index > -1){
+                    target[index] = comp
+                } else {
+                    target.push(comp)
+                }
+            })
+        }
+        
+        merage(comps,this.slot.default)
+        merage(base,this.input.base)
+        merage(advance,this.input.advance)
     }
     getFormItem(name:string = 'ease-form-default-item') : schedulerFormItem{
         return this.formItems.find(item => item.component.name === name)
     }
-    getGroupedSlots(slotName:string) : CompOptions[]{
+    getGroupedSlots(slotName:string) : (CompOptions|schedulerInput)[]{
         return this.slot[slotName] || []
     }
-    getSlot(slotName:string,name:string = 'ease-form-default') : CompOptions {
+    getSlot(slotName:string,name:string = 'ease-form-default') : CompOptions|schedulerInput {
         if(slotName in this.slot){
             return this.slot[slotName].find(item => {
-                //let compName = item.internal ? `${name}-${slotName}` : slotName
-                return item.name === name
+                if(typeof item === 'string'){
+                    return item === name
+                }else{
+                    return (item as CompOptions).name === name
+                }
+                
             })
         }else{
             console.warn(`slot template '${slotName}' was not exsist!`)
         }
     }
-    getInput(type:string) : CompOptions{
-        return this.slot.default.find(item => item.type === type)
+    getInput(type:string) : schedulerInput{
+        return this.slot.default.find(item => {
+            return item.type === type
+        })
     }
     // private check(comp:CompOptions){
     //     if(comp.name){

@@ -30,6 +30,9 @@ export function generateFieldConfig(type:string){
         formItem:'ease-form-default-item',
         label:'label',
         annotation:'field desc',
+        vnode:{
+            
+        },
         linkage:{
             visibility:{
                 rule:null

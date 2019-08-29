@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { formVm } from './instence';
 import { CompOptions } from './../../types/comp-options.d';
 import i18n from './i18n'
@@ -7,7 +8,19 @@ import scheduler from './scheduler';
 export const staticApi = {
     localize:i18n.localize,
     extend:extend,
-    extends:multipleExtend
+    extends:multipleExtend,
+    use:function(configs:obj[]){
+        const inputs:schedulerInput[] = configs.map(config => {
+            return {
+                alias:config.alias,
+                type:config.type,
+                advance:false,
+                component:config.ref
+            }
+        })
+        console.log('inputs',inputs)
+        multipleExtend(inputs)
+    }
 }
 
 const { getInstance,getFieldInstance } = formVm

@@ -12,7 +12,7 @@
     <transition-group>
       <el-tag
         v-for="type in base"
-        :key="type.name"
+        :key="type.alias"
         type="info"
         data-group="base"
         >{{ type.alias }}</el-tag

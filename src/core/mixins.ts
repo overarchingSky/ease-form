@@ -27,6 +27,7 @@ export default {
             this.currentValue = val || {}
         },
         config(...arg){
+            console.log('+++---')
             formVm.init(this.config,this.currentValue)
         }
     },

@@ -32,6 +32,7 @@ export default {
             }
         }, [formVm.config.map((Field:Field,index:number) => {
             const activeClassName = this.currentActiveFeild && this.currentActiveFeild.id === Field.id && 'active'
+            console.log('change++')
             return h('div',{
                 class:`ease-form-row ${activeClassName}`,
                 key: Field.id,
@@ -75,7 +76,7 @@ export default {
             const { group } = item.dataset
             const inputs = scheduler.input[(group as string)]
             const input = inputs[oldIndex]
-            console.log('info',input)
+            console.log('info',scheduler.input,input)
             this.config.splice(newIndex,0,generateFieldConfig(input.type))
             console.log('add',this.config)
             this.$emit('input',this.config)
