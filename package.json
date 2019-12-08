@@ -56,7 +56,7 @@
         "lodash.get": "^4.4.2",
         "lodash.set": "^4.3.2",
         "rollup-plugin-typescript2": "^0.22.1",
-        "serialize-javascript": "^1.8.0",
+        "serialize-javascript": "^2.1.1",
         "ts-loader": "^6.0.4",
         "typescript": "^3.5.3",
         "vee-validate": "^2.2.14",
